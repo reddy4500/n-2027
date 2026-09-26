@@ -345,7 +345,7 @@ var init_store = __esm({
       settings: {
         name: "",
         apiKey: "",
-        model: "gemini-2.5-flash",
+        model: "gemini-3.8-flash",
         lang: "en",
         // 'en' | 'te'
         examDate: "",
@@ -830,7 +830,7 @@ var sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 async function gemini({ system: system2, prompt, messages, json = false, temperature = 0.8, signal } = {}) {
   const key = S.settings.apiKey?.trim();
   if (!key) throw new AIError("Add your free Gemini API key in Settings to use AI features.");
-  const model = (S.settings.model || "gemini-2.5-flash").trim();
+  const model = (S.settings.model || "gemini-3.8-flash").trim();
   const contents = messages ? messages.map((m) => ({ role: m.role === "user" ? "user" : "model", parts: [{ text: m.text }] })) : [{ role: "user", parts: [{ text: prompt }] }];
   const body = { contents, generationConfig: { temperature } };
   if (system2) body.systemInstruction = { parts: [{ text: system2 }] };
@@ -1031,7 +1031,7 @@ var CHIPS_TE = [
   "Last month revision \u0C0E\u0C32\u0C3E \u0C1A\u0C47\u0C2F\u0C3E\u0C32\u0C3F?"
 ];
 function system() {
-  return `You are "Guru", a warm, sharp NEET PG mentor and daily study companion for an Indian MBBS graduate.
+  return `You are "Pinaka", a warm, sharp NEET PG mentor and daily study companion for an Indian MBBS graduate.
 - Teach with accuracy (standard Indian references, current NEET PG/NBEMS pattern and national guidelines). If unsure, say so.
 - Be concise: short paragraphs, bullets, mnemonics, tables in text. Prefer high-yield exam-oriented points.
 - Personalise using the student's live progress below; point out weak areas, suggest next actions inside this app (Practice, Mock test, Flashcards, Daily plan).
@@ -1046,7 +1046,7 @@ function renderMentor(el) {
   const chips = S.settings.lang === "te" ? CHIPS_TE : CHIPS_EN;
   el.innerHTML = `${hasKey() ? "" : noKeyNotice()}
   <div class="card chat">
-    <div class="card-head"><h3>Guru \u2014 your AI mentor</h3><div class="row"><button class="btn sm" id="cStop">Stop voice</button><button class="btn sm danger" id="cClear">Clear chat</button></div></div>
+    <div class="card-head"><h3>Pinaka \u2014 your AI mentor</h3><div class="row"><button class="btn sm" id="cStop">Stop voice</button><button class="btn sm danger" id="cClear">Clear chat</button></div></div>
     <div class="msgs" id="msgs"></div>
     <div class="chips">${chips.map((c) => `<button class="chip">${esc(c)}</button>`).join("")}</div>
     <form class="composer" id="cForm">
@@ -1082,7 +1082,7 @@ function drawMsgs(typing = false) {
   const box = document.getElementById("msgs");
   if (!box) return;
   if (!S.chat.length && !typing) {
-    box.innerHTML = `<div class="msg model">${md(S.settings.lang === "te" ? `\u0C28\u0C2E\u0C38\u0C4D\u0C24\u0C47 ${S.settings.name ? "Dr. " + S.settings.name : "Doctor"}! \u0C28\u0C47\u0C28\u0C41 \u0C2E\u0C40 NEET PG mentor **Guru**. Concepts, doubts, study plan, motivation \u2014 \u0C0F\u0C26\u0C48\u0C28\u0C3E \u0C05\u0C21\u0C17\u0C02\u0C21\u0C3F. Mic \u0C28\u0C4A\u0C15\u0C4D\u0C15\u0C3F \u0C2E\u0C3E\u0C1F\u0C4D\u0C32\u0C3E\u0C21\u0C35\u0C1A\u0C4D\u0C1A\u0C41 \u0C15\u0C42\u0C21\u0C3E.` : `Hi ${S.settings.name ? "Dr. " + S.settings.name : "Doctor"}! I'm **Guru**, your NEET PG mentor. Ask me about concepts, doubts, strategy or motivation \u2014 or tap the mic and just talk.`)}</div>`;
+    box.innerHTML = `<div class="msg model">${md(S.settings.lang === "te" ? `\u0C28\u0C2E\u0C38\u0C4D\u0C24\u0C47 ${S.settings.name ? "Dr. " + S.settings.name : "Doctor"}! \u0C28\u0C47\u0C28\u0C41 \u0C2E\u0C40 NEET PG mentor **Pinaka**. Concepts, doubts, study plan, motivation \u2014 \u0C0F\u0C26\u0C48\u0C28\u0C3E \u0C05\u0C21\u0C17\u0C02\u0C21\u0C3F. Mic \u0C28\u0C4A\u0C15\u0C4D\u0C15\u0C3F \u0C2E\u0C3E\u0C1F\u0C4D\u0C32\u0C3E\u0C21\u0C35\u0C1A\u0C4D\u0C1A\u0C41 \u0C15\u0C42\u0C21\u0C3E.` : `Hi ${S.settings.name ? "Dr. " + S.settings.name : "Doctor"}! I'm **Pinaka**, your NEET PG mentor. Ask me about concepts, doubts, strategy or motivation \u2014 or tap the mic and just talk.`)}</div>`;
     return;
   }
   box.innerHTML = S.chat.map((m) => `<div class="msg ${m.role}">${m.role === "user" ? esc(m.text).replace(/\n/g, "<br>") : md(m.text)}</div>`).join("") + (typing ? '<div class="msg model"><span class="typing"><i></i><i></i><i></i></span></div>' : "");
@@ -2124,7 +2124,7 @@ var PAGES = [
   ["home", ["home", "dashboard", "\u0C39\u0C4B\u0C2E\u0C4D"]],
   ["practice", ["practice", "\u0C2A\u0C4D\u0C30\u0C3E\u0C15\u0C4D\u0C1F\u0C40\u0C38\u0C4D"]],
   ["mock", ["mock", "\u0C2E\u0C3E\u0C15\u0C4D"]],
-  ["mentor", ["mentor", "guru", "chat", "\u0C17\u0C41\u0C30\u0C41"]],
+  ["mentor", ["mentor", "pinaka", "chat", "\u0C2A\u0C3F\u0C28\u0C3E\u0C15"]],
   ["daily", ["daily", "today", "\u0C30\u0C4B\u0C1C\u0C41"]],
   ["cards", ["flashcard", "flash card", "cards", "\u0C2B\u0C4D\u0C32\u0C3E\u0C37\u0C4D"]],
   ["plan", ["planner", "plan", "timer", "\u0C2A\u0C4D\u0C32\u0C3E\u0C28\u0C4D"]],
@@ -2233,7 +2233,7 @@ function handleCommand(raw) {
     }
   }
   askMentor(raw.trim(), { voice: true });
-  return "Asking Guru\u2026";
+  return "Asking Pinaka\u2026";
 }
 
 // js/home.js
@@ -2253,7 +2253,7 @@ function renderHome(el) {
       <button class="btn" id="hDay">${plan ? "Open today's plan" : "Start my day"}</button>
       <button class="btn" id="hPractice">Quick 10 MCQs</button>
       <button class="btn" id="hMock">Mini mock (25)</button>
-      <a class="btn" href="#/mentor">Talk to Guru</a>
+      <a class="btn" href="#/mentor">Talk to Pinaka</a>
     </div>
   </div>
   <div class="grid g4 section">
@@ -2266,7 +2266,7 @@ function renderHome(el) {
     <div class="card"><div class="card-head"><h3>Subject accuracy</h3><a class="small" href="#/plan">Details</a></div>
       ${practised.length ? practised.sort((a, b) => ss[a.id].c / ss[a.id].n - ss[b.id].c / ss[b.id].n).map((s) => {
     const v = ss[s.id], a = pct(v.c, v.n);
-    return `<div class="subj-row"><span>${esc(s.name.replace(/ \(.*\)/, ""))}</span><div class="bar ${a >= 70 ? "ok" : a >= 50 ? "warn" : "bad"}"><i style="width:${a}%"></i></div><span>${a}%</span></div>`;
+    return `<div class="subj-row"><span>${esc(s.name.replace(/ \(.*\)/, ""))}</span><div class="bar ${a >= 70 ? "ok" : a >= 50 ? "warn" : "bad"}"><i style="width:${a}\%"></i></div><span>${a}%</span></div>`;
   }).join("") : '<p class="empty">Solve a few questions to see your subject-wise accuracy.</p>'}
     </div>
     <div>
@@ -2303,7 +2303,7 @@ function renderSettings(el) {
     <p class="muted small">Get a free API key at <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">aistudio.google.com/app/apikey</a>. The key is stored only in this browser and sent only to Google's Gemini API. Never commit it to GitHub.</p>
     <div class="grid g2">
       <label class="field">API key<input type="password" data-k="apiKey" value="${esc(s.apiKey)}" placeholder="AIza\u2026" autocomplete="off" /></label>
-      <label class="field">Model<input type="text" data-k="model" list="models" value="${esc(s.model)}" /><datalist id="models"><option value="gemini-2.5-flash"><option value="gemini-2.5-flash-lite"><option value="gemini-2.5-pro"></datalist></label>
+      <label class="field">Model<input type="text" data-k="model" list="models" value="${esc(s.model)}" /><datalist id="models"><option value="gemini-3.8-flash"><option value="gemini-3.5-flash-lite"><option value="gemini-2.5-flash"><option value="gemini-2.5-pro"></datalist></label>
     </div>
     <div class="row" style="margin-top:10px"><button class="btn" id="sTest">Test connection</button><span class="muted small" id="sTestOut"></span></div>
   </div>
@@ -2349,7 +2349,7 @@ function renderSettings(el) {
       <tr><td>evening check-in / good night</td><td>\u0C36\u0C41\u0C2D\u0C30\u0C3E\u0C24\u0C4D\u0C30\u0C3F</td><td>Opens the check-in</td></tr>
       <tr><td>open mentor / home / settings\u2026</td><td>\u0C39\u0C4B\u0C2E\u0C4D, \u0C38\u0C46\u0C1F\u0C4D\u0C1F\u0C3F\u0C02\u0C17\u0C4D\u0C38\u0C4D</td><td>Navigation</td></tr>
       <tr><td>stop</td><td>\u0C06\u0C2A\u0C41</td><td>Stops speaking</td></tr>
-      <tr><td colspan="3">Anything else is sent to Guru, your AI mentor, as a question.</td></tr>
+      <tr><td colspan="3">Anything else is sent to Pinaka, your AI mentor, as a question.</td></tr>
     </table></div>
     <p class="muted small">Keyboard: press <kbd>M</kbd> for the mic, <kbd>1</kbd>\u2013<kbd>4</kbd> to answer, <kbd>N</kbd> for next.</p>
   </div>`;
@@ -2386,7 +2386,7 @@ function renderSettings(el) {
       out.textContent = "\u2717 " + e.message;
     }
   };
-  $("#sVoice", el).onclick = () => speak(S.settings.lang === "te" ? "\u0C28\u0C2E\u0C38\u0C4D\u0C24\u0C47 \u0C21\u0C3E\u0C15\u0C4D\u0C1F\u0C30\u0C4D! \u0C2E\u0C40 NEET PG \u0C2A\u0C4D\u0C30\u0C2F\u0C3E\u0C23\u0C02\u0C32\u0C4B \u0C28\u0C47\u0C28\u0C41 \u0C24\u0C4B\u0C21\u0C41\u0C02\u0C1F\u0C3E\u0C28\u0C41." : "Hello Doctor! I am Guru, your NEET PG study companion.");
+  $("#sVoice", el).onclick = () => speak(S.settings.lang === "te" ? "\u0C28\u0C2E\u0C38\u0C4D\u0C24\u0C47 \u0C21\u0C3E\u0C15\u0C4D\u0C1F\u0C30\u0C4D! \u0C2E\u0C40 NEET PG \u0C2A\u0C4D\u0C30\u0C2F\u0C3E\u0C23\u0C02\u0C32\u0C4B \u0C28\u0C47\u0C28\u0C41 \u0C24\u0C4B\u0C21\u0C41\u0C02\u0C1F\u0C3E\u0C28\u0C41." : "Hello Doctor! I am Pinaka, your NEET PG study companion.");
   $("#sExport", el).onclick = () => download(`neetpg-backup-${today()}.json`, exportData());
   $("#sImport", el).onchange = async (e) => {
     const f = e.target.files[0];
