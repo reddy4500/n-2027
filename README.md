@@ -28,7 +28,7 @@ An AI study companion for NEET PG that runs in your browser, free on GitHub Page
 - **Daily Coach**: an AI plan for the day, spoken briefing, question of the day, evening check-in with feedback, journal and reminders.
 - **Practice**: unlimited AI-generated NEET PG-style MCQs by subject, topic, difficulty and style. Explanations, high-yield pearls, *Explain in Telugu*, and automatic saving of mistakes for review.
 - **Mock tests**: 25, 50, 100 or 200 questions (200 in 210 minutes), weighted across 19 subjects, with +4/−1 marking, a question palette, subject-wise results and AI analysis.
-- **AI Mentor "Guru"**: a chat mentor that knows your progress. Voice in and voice out.
+- **AI Mentor "Pinaka"**: a chat mentor that knows your progress. Voice in and voice out.
 - **Flashcards**: AI decks with spaced repetition.
 - **Planner**: focus timer that logs your study time, 14-day chart, AI master plan to exam day, and weightage vs. your accuracy.
 - **Voice**: for example “good morning”, “start quiz on pharmacology”, “option B”, “next”, “explain”, “start timer”. In Telugu: శుభోదయం, సీ, తరువాత, వివరించు. Anything else goes to the mentor.
