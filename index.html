@@ -1,0 +1,2573 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>NEET PG AI Agent</title>
+  <meta name="description" content="AI-powered NEET PG preparation agent: dynamic MCQs, mock tests, voice mentor, daily coaching, flashcards and study planner." />
+  <meta name="theme-color" content="#0f766e" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMwZjc2NmUiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwZTc0OTAiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjExMiIgZmlsbD0idXJsKCNnKSIvPgogIDxwYXRoIGQ9Ik0xNzYgMTM2djExMmE4MCA4MCAwIDAgMCAxNjAgMFYxMzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIzMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPGNpcmNsZSBjeD0iMTc2IiBjeT0iMTI4IiByPSIxOCIgZmlsbD0iI2ZmZiIvPjxjaXJjbGUgY3g9IjMzNiIgY3k9IjEyOCIgcj0iMTgiIGZpbGw9IiNmZmYiLz4KICA8cGF0aCBkPSJNMjU2IDMyOHY0MGE1NiA1NiAwIDAgMCAxMTIgMHYtMjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIzMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPGNpcmNsZSBjeD0iMzY4IiBjeT0iMzE2IiByPSIzNiIgZmlsbD0iIzVlZWFkNCIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjE4Ii8+Cjwvc3ZnPgo=" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --surface-2: #f0f2f5;
+  --border: #e3e6eb;
+  --text: #16202c;
+  --muted: #5c6b7a;
+  --primary: #0f766e;
+  --primary-2: #14b8a6;
+  --primary-soft: #e6f6f4;
+  --ok: #15803d;
+  --ok-soft: #e8f7ee;
+  --bad: #b91c1c;
+  --bad-soft: #fdecec;
+  --warn: #b45309;
+  --warn-soft: #fef5e7;
+  --shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 4px 16px rgba(16, 24, 40, .05);
+  --radius: 14px;
+  --font: "Inter", "Noto Sans Telugu", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1117; --surface: #151b23; --surface-2: #1c2430; --border: #2a3441;
+    --text: #e6edf3; --muted: #93a1b0; --primary: #2dd4bf; --primary-2: #14b8a6;
+    --primary-soft: #0f2e2b; --ok: #4ade80; --ok-soft: #10281a; --bad: #f87171;
+    --bad-soft: #2e1414; --warn: #fbbf24; --warn-soft: #2d2410;
+    --shadow: 0 1px 2px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1117; --surface: #151b23; --surface-2: #1c2430; --border: #2a3441;
+  --text: #e6edf3; --muted: #93a1b0; --primary: #2dd4bf; --primary-2: #14b8a6;
+  --primary-soft: #0f2e2b; --ok: #4ade80; --ok-soft: #10281a; --bad: #f87171;
+  --bad-soft: #2e1414; --warn: #fbbf24; --warn-soft: #2d2410;
+  --shadow: 0 1px 2px rgba(0,0,0,.3);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 15px; line-height: 1.55; }
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: var(--primary); }
+h1, h2, h3 { line-height: 1.25; margin: 0 0 .5rem; }
+h2 { font-size: 1.25rem; }
+h3 { font-size: 1.05rem; }
+p { margin: .4rem 0; }
+.muted { color: var(--muted); }
+.small { font-size: .85rem; }
+.hidden { display: none !important; }
+
+.app { display: flex; min-height: 100vh; }
+.sidebar { width: 232px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--border); padding: 18px 12px; position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; }
+.brand { display: flex; gap: 10px; align-items: center; padding: 4px 8px 18px; }
+.brand strong { display: block; font-size: 1.05rem; }
+.brand span { display: block; font-size: .8rem; color: var(--muted); }
+.nav { display: flex; flex-direction: column; gap: 2px; }
+.nav a { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 10px; color: var(--text); text-decoration: none; font-weight: 500; }
+.nav a:hover { background: var(--surface-2); }
+.nav a.active { background: var(--primary-soft); color: var(--primary); }
+.nav svg { width: 18px; height: 18px; flex-shrink: 0; }
+.sidebar-foot { margin-top: auto; font-size: .8rem; color: var(--muted); padding: 8px; }
+
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.topbar { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 24px; background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+.topbar-title { font-weight: 700; font-size: 1.1rem; }
+.topbar-right { display: flex; gap: 6px; }
+.pill { font-size: .8rem; padding: 4px 10px; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); white-space: nowrap; }
+.pill:empty { display: none; }
+.pill.install { cursor: pointer; background: var(--primary); border-color: var(--primary); color: #fff; font-weight: 600; font-family: inherit; }
+.pill[hidden] { display: none; }
+.offline-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--warn); margin-right: 6px; }
+.view { padding: 22px 24px 120px; max-width: 1080px; width: 100%; margin: 0 auto; outline: none; }
+
+.bottom-nav { display: none; }
+@media (max-width: 820px) {
+  .sidebar { display: none; }
+  .topbar { padding: 10px 16px; }
+  .view { padding: 16px 16px 140px; }
+  .bottom-nav { display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 20; background: var(--surface); border-top: 1px solid var(--border); overflow-x: auto; padding: 4px 4px calc(4px + env(safe-area-inset-bottom)); scrollbar-width: none; }
+  .bottom-nav a { flex: 1 0 64px; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: .68rem; padding: 6px 2px; color: var(--muted); text-decoration: none; border-radius: 8px; }
+  .bottom-nav a.active { color: var(--primary); }
+  .bottom-nav svg { width: 20px; height: 20px; }
+}
+
+.grid { display: grid; gap: 14px; }
+.g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 820px) { .g3, .g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .g2 { grid-template-columns: 1fr; } }
+
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); min-width: 0; }
+.card + .card { margin-top: 14px; }
+.grid > .card + .card { margin-top: 0; }
+.section { margin-top: 18px; }
+.card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.card-head h3 { margin: 0; }
+.stat .label { font-size: .8rem; color: var(--muted); }
+.stat .value { font-size: 1.6rem; font-weight: 700; }
+.stat .sub { font-size: .78rem; color: var(--muted); }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid var(--border); background: var(--surface); padding: 9px 14px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: .92rem; text-decoration: none; color: var(--text); }
+.btn:hover { background: var(--surface-2); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.btn.primary { background: var(--primary); border-color: var(--primary); color: #fff; }
+:root[data-theme="dark"] .btn.primary { color: #062a26; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn.primary { color: #062a26; } }
+.btn.primary:hover { filter: brightness(1.07); }
+.btn.ghost { background: transparent; border-color: transparent; }
+.btn.danger { color: var(--bad); }
+.btn.sm { padding: 5px 10px; font-size: .82rem; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.row.end { justify-content: flex-end; }
+.spacer { flex: 1; }
+
+label.field { display: flex; flex-direction: column; gap: 4px; font-size: .85rem; color: var(--muted); font-weight: 500; }
+input[type=text], input[type=password], input[type=date], input[type=time], input[type=number], select, textarea {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 9px 11px; width: 100%; color: var(--text);
+}
+textarea { resize: vertical; min-height: 70px; }
+input:focus, select:focus, textarea:focus, .btn:focus-visible { outline: 2px solid var(--primary-2); outline-offset: 1px; }
+.check { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+
+.bar { height: 8px; background: var(--surface-2); border-radius: 99px; overflow: hidden; }
+.bar > i { display: block; height: 100%; background: var(--primary); border-radius: 99px; }
+.bar.ok > i { background: var(--ok); } .bar.bad > i { background: var(--bad); } .bar.warn > i { background: var(--warn); }
+.subj-row { display: grid; grid-template-columns: 130px 1fr 52px; gap: 10px; align-items: center; font-size: .86rem; padding: 4px 0; }
+.subj-row span:last-child { text-align: right; color: var(--muted); }
+
+.tag { display: inline-block; font-size: .74rem; padding: 2px 8px; border-radius: 99px; background: var(--surface-2); color: var(--muted); margin-right: 4px; }
+.tag.ok { background: var(--ok-soft); color: var(--ok); } .tag.bad { background: var(--bad-soft); color: var(--bad); } .tag.p { background: var(--primary-soft); color: var(--primary); }
+
+/* Quiz */
+.q-meta { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+.q-stem { font-size: 1.05rem; font-weight: 500; white-space: pre-wrap; }
+.opts { display: flex; flex-direction: column; gap: 8px; margin: 14px 0; }
+.opt { display: flex; gap: 10px; align-items: flex-start; text-align: left; padding: 11px 12px; border: 1.5px solid var(--border); border-radius: 11px; background: var(--surface); cursor: pointer; width: 100%; }
+.opt:hover:not(:disabled) { border-color: var(--primary-2); }
+.opt b { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--surface-2); font-size: .82rem; }
+.opt.sel { border-color: var(--primary); background: var(--primary-soft); }
+.opt.right { border-color: var(--ok); background: var(--ok-soft); }
+.opt.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.opt:disabled { cursor: default; }
+.explain { border-left: 3px solid var(--primary); background: var(--surface-2); padding: 12px 14px; border-radius: 0 10px 10px 0; margin-top: 10px; }
+.pearl { margin-top: 8px; font-weight: 600; color: var(--primary); }
+.palette { display: grid; grid-template-columns: repeat(auto-fill, minmax(36px, 1fr)); gap: 6px; max-height: 260px; overflow: auto; }
+.palette button { height: 34px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); cursor: pointer; font-size: .8rem; }
+.palette button.ans { background: var(--primary); color: #fff; border-color: var(--primary); }
+.palette button.mark { box-shadow: inset 0 0 0 2px var(--warn); }
+.palette button.cur { outline: 2px solid var(--text); }
+.palette button:disabled { opacity: .35; }
+.timer { font-variant-numeric: tabular-nums; font-weight: 700; font-size: 1.1rem; }
+.timer.low { color: var(--bad); }
+
+/* Chat */
+.chat { display: flex; flex-direction: column; height: calc(100vh - 210px); min-height: 420px; }
+@media (max-width: 820px) { .chat { height: calc(100vh - 250px); } }
+.msgs { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 4px 2px 12px; }
+.msg { max-width: 86%; padding: 10px 14px; border-radius: 14px; word-wrap: break-word; }
+.msg.user { align-self: flex-end; background: var(--primary); color: #fff; border-bottom-right-radius: 4px; }
+:root[data-theme="dark"] .msg.user { color: #062a26; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .msg.user { color: #062a26; } }
+.msg.model { align-self: flex-start; background: var(--surface); border: 1px solid var(--border); border-bottom-left-radius: 4px; }
+.msg p:first-child { margin-top: 0; } .msg p:last-child { margin-bottom: 0; }
+.msg ul, .msg ol { margin: .3rem 0; padding-left: 1.2rem; }
+.composer { display: flex; gap: 8px; align-items: flex-end; padding-top: 10px; border-top: 1px solid var(--border); }
+.composer textarea { min-height: 44px; max-height: 140px; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.chip { border: 1px solid var(--border); background: var(--surface); border-radius: 99px; padding: 5px 11px; font-size: .8rem; cursor: pointer; }
+.chip:hover { border-color: var(--primary-2); }
+.typing { display: inline-flex; gap: 4px; } .typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); animation: blink 1.2s infinite; }
+.typing i:nth-child(2) { animation-delay: .2s; } .typing i:nth-child(3) { animation-delay: .4s; }
+@keyframes blink { 0%, 80%, 100% { opacity: .2 } 40% { opacity: 1 } }
+
+/* Flashcards */
+.flash { perspective: 1000px; min-height: 220px; cursor: pointer; }
+.flash-inner { position: relative; min-height: 220px; transition: transform .45s; transform-style: preserve-3d; }
+.flash.flipped .flash-inner { transform: rotateY(180deg); }
+.flash-face { position: absolute; inset: 0; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; text-align: center; padding: 22px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); font-size: 1.08rem; overflow: auto; }
+.flash-face.back { transform: rotateY(180deg); background: var(--primary-soft); }
+
+.tasks { list-style: none; padding: 0; margin: 0; }
+.tasks li { display: flex; gap: 10px; align-items: flex-start; padding: 9px 0; border-bottom: 1px solid var(--border); }
+.tasks li:last-child { border-bottom: 0; }
+.tasks li.done span { text-decoration: line-through; color: var(--muted); }
+.tasks input { margin-top: 4px; width: 18px; height: 18px; accent-color: var(--primary); }
+
+table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--border); }
+th { color: var(--muted); font-weight: 600; font-size: .8rem; }
+.table-wrap { overflow-x: auto; }
+
+.pomo { font-size: 3rem; font-weight: 700; text-align: center; font-variant-numeric: tabular-nums; }
+.empty { text-align: center; color: var(--muted); padding: 26px 10px; }
+.notice { background: var(--warn-soft); color: var(--warn); border-radius: 10px; padding: 10px 14px; font-size: .88rem; margin-bottom: 14px; }
+.notice a { color: inherit; font-weight: 600; }
+.loader { display: inline-block; width: 18px; height: 18px; border: 2.5px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin .8s linear infinite; vertical-align: middle; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.center { text-align: center; }
+details summary { cursor: pointer; font-weight: 600; }
+kbd { background: var(--surface-2); border: 1px solid var(--border); border-radius: 5px; padding: 0 5px; font-size: .8rem; }
+.hero { background: linear-gradient(135deg, #0f766e, #0e7490); color: #fff; border: 0; }
+.hero .muted { color: rgba(255,255,255,.85); }
+.hero .btn { background: rgba(255,255,255,.15); border-color: rgba(255,255,255,.3); color: #fff; }
+.hero .btn:hover { background: rgba(255,255,255,.25); }
+
+/* Voice */
+.mic-fab { position: fixed; right: 20px; bottom: 24px; z-index: 30; width: 58px; height: 58px; border-radius: 50%; border: 0; background: var(--primary); color: #fff; display: grid; place-items: center; cursor: pointer; box-shadow: 0 6px 20px rgba(15,118,110,.35); }
+.mic-fab.on { background: var(--bad); animation: pulse 1.4s infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(185,28,28,.5) } 70% { box-shadow: 0 0 0 16px rgba(185,28,28,0) } 100% { box-shadow: 0 0 0 0 rgba(185,28,28,0) } }
+@media (max-width: 820px) { .mic-fab { bottom: calc(76px + env(safe-area-inset-bottom)); right: 14px; width: 52px; height: 52px; } }
+.voice-bar { position: fixed; left: 50%; transform: translateX(-50%); bottom: 96px; z-index: 30; background: var(--text); color: var(--bg); padding: 9px 16px; border-radius: 99px; font-size: .9rem; display: flex; gap: 8px; align-items: center; max-width: calc(100% - 32px); }
+.voice-bar .dot { width: 9px; height: 9px; border-radius: 50%; background: #ef4444; animation: blink 1s infinite; flex-shrink: 0; }
+@media (max-width: 820px) { .voice-bar { bottom: 140px; } }
+.voice-bar[hidden] { display: none; }
+.toasts { position: fixed; top: 14px; left: 50%; transform: translateX(-50%); z-index: 50; display: flex; flex-direction: column; gap: 8px; width: min(420px, calc(100% - 32px)); }
+.toast { background: var(--text); color: var(--bg); padding: 10px 14px; border-radius: 10px; font-size: .9rem; box-shadow: var(--shadow); animation: slide .2s ease-out; }
+.toast.bad { background: var(--bad); color: #fff; } .toast.ok { background: var(--ok); color: #fff; }
+@keyframes slide { from { opacity: 0; transform: translateY(-8px) } }
+
+</style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMwZjc2NmUiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwZTc0OTAiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjExMiIgZmlsbD0idXJsKCNnKSIvPgogIDxwYXRoIGQ9Ik0xNzYgMTM2djExMmE4MCA4MCAwIDAgMCAxNjAgMFYxMzYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIzMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPGNpcmNsZSBjeD0iMTc2IiBjeT0iMTI4IiByPSIxOCIgZmlsbD0iI2ZmZiIvPjxjaXJjbGUgY3g9IjMzNiIgY3k9IjEyOCIgcj0iMTgiIGZpbGw9IiNmZmYiLz4KICA8cGF0aCBkPSJNMjU2IDMyOHY0MGE1NiA1NiAwIDAgMCAxMTIgMHYtMjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIzMCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPGNpcmNsZSBjeD0iMzY4IiBjeT0iMzE2IiByPSIzNiIgZmlsbD0iIzVlZWFkNCIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjE4Ii8+Cjwvc3ZnPgo=" alt="" width="32" height="32" />
+        <div><strong>NEET PG</strong><span>AI Agent</span></div>
+      </div>
+      <nav id="nav" class="nav" aria-label="Main"></nav>
+      <div class="sidebar-foot" id="sidebarFoot"></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-title" id="pageTitle">Home</div>
+        <div class="topbar-right">
+          <span class="pill" id="streakPill" title="Study streak"></span>
+          <span class="pill" id="countdownPill" title="Days to exam"></span>
+          <button class="pill install" id="installBtn" hidden>Install app</button>
+        </div>
+      </header>
+      <section id="view" class="view" tabindex="-1"></section>
+    </main>
+  </div>
+
+  <nav id="bottomNav" class="bottom-nav" aria-label="Quick"></nav>
+
+  <button id="micFab" class="mic-fab" aria-label="Voice command" title="Voice command (press M)">
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v5"/></svg>
+  </button>
+  <div id="voiceBar" class="voice-bar" hidden>
+    <span class="dot"></span><span id="voiceText">Listening…</span>
+  </div>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+
+  <script type="module">
+/* NEET PG AI Agent: all app code in one file. Each section starts with a // js/<module>.js comment. */
+var __defProp = Object.defineProperty;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __esm = (fn, res, err) => function __init() {
+  if (err) throw err[0];
+  try {
+    return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
+  } catch (e) {
+    throw err = [e], e;
+  }
+};
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
+
+// js/store.js
+function today(d = /* @__PURE__ */ new Date()) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+function merge(base, extra) {
+  if (!extra || typeof extra !== "object" || Array.isArray(extra)) return extra ?? base;
+  const out = { ...base };
+  for (const k of Object.keys(extra)) {
+    out[k] = base && typeof base[k] === "object" && !Array.isArray(base[k]) && base[k] !== null ? merge(base[k], extra[k]) : extra[k];
+  }
+  return out;
+}
+function load() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    return raw ? merge(DEFAULTS(), JSON.parse(raw)) : DEFAULTS();
+  } catch {
+    return DEFAULTS();
+  }
+}
+function save() {
+  if (S.attempts.length > 2e4) S.attempts.splice(0, S.attempts.length - 2e4);
+  if (S.seen.length > 300) S.seen.splice(0, S.seen.length - 300);
+  if (S.chat.length > 200) S.chat.splice(0, S.chat.length - 200);
+  try {
+    localStorage.setItem(KEY, JSON.stringify(S));
+  } catch (e) {
+    console.warn("Save failed", e);
+  }
+}
+function resetAll(keepSettings = true) {
+  const settings = S.settings;
+  const fresh = DEFAULTS();
+  for (const k of Object.keys(S)) delete S[k];
+  Object.assign(S, fresh);
+  if (keepSettings) S.settings = settings;
+  save();
+}
+function exportData() {
+  const copy = JSON.parse(JSON.stringify(S));
+  copy.settings.apiKey = "";
+  return JSON.stringify(copy, null, 2);
+}
+function importData(json) {
+  const data = JSON.parse(json);
+  const key = S.settings.apiKey;
+  const merged = merge(DEFAULTS(), data);
+  for (const k of Object.keys(S)) delete S[k];
+  Object.assign(S, merged);
+  if (!S.settings.apiKey) S.settings.apiKey = key;
+  save();
+}
+var KEY, DEFAULTS, S, uid;
+var init_store = __esm({
+  "js/store.js"() {
+    KEY = "neetpg-ai-agent:v1";
+    DEFAULTS = () => ({
+      settings: {
+        name: "",
+        apiKey: "",
+        model: "gemini-2.5-flash",
+        lang: "en",
+        // 'en' | 'te'
+        examDate: "",
+        dailyHours: 8,
+        voiceReplies: true,
+        handsFree: false,
+        rate: 1,
+        theme: "auto",
+        reminders: false,
+        morningTime: "07:00",
+        eveningTime: "21:30"
+      },
+      attempts: [],
+      // {s, t, c (0/1), ts, m (mode)}
+      mistakes: [],
+      // question objects + {due, box}
+      cards: [],
+      // {id, front, back, subject, ef, interval, reps, due}
+      chat: [],
+      // {role:'user'|'model', text, ts}
+      journal: [],
+      // {date, hours, mood, good, hard, feedback}
+      plans: {},
+      // date -> {greeting, tasks:[{text, minutes, subject, done}], motivation, tip}
+      masterPlan: null,
+      mocks: [],
+      // results
+      studyLog: {},
+      // date -> minutes
+      streak: { last: "", count: 0 },
+      seen: [],
+      // recent question stems (to avoid repeats)
+      notified: {},
+      // date -> {morning, evening}
+      qotd: {}
+      // date -> question
+    });
+    S = load();
+    uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
+  }
+});
+
+// js/syllabus.js
+function findSubject(text) {
+  const t = ` ${text.toLowerCase()} `;
+  let best = null, len = 0;
+  for (const s of SUBJECTS) for (const a of s.aliases) {
+    if (t.includes(` ${a}`) && a.length > len) {
+      best = s;
+      len = a.length;
+    }
+  }
+  return best;
+}
+function subjectMix(n) {
+  const total = SUBJECTS.reduce((a, s) => a + s.w, 0);
+  if (n < 40) {
+    return Array.from({ length: n }, () => {
+      let r = Math.random() * total;
+      for (const s of SUBJECTS) {
+        r -= s.w;
+        if (r <= 0) return s.id;
+      }
+      return SUBJECTS[0].id;
+    });
+  }
+  const list = [];
+  const rema = [];
+  for (const s of SUBJECTS) {
+    const exact = s.w / total * n;
+    const k = Math.floor(exact);
+    for (let i = 0; i < k; i++) list.push(s.id);
+    rema.push([exact - k, s.id]);
+  }
+  rema.sort((a, b) => b[0] - a[0]);
+  for (let i = 0; list.length < n; i++) list.push(rema[i % rema.length][1]);
+  return shuffle(list);
+}
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+var SUBJECTS, byId, subjectName;
+var init_syllabus = __esm({
+  "js/syllabus.js"() {
+    SUBJECTS = [
+      { id: "anatomy", name: "Anatomy", w: 10, aliases: ["anatomy", "anat"], topics: ["Upper limb", "Lower limb", "Thorax", "Abdomen & pelvis", "Head & neck", "Neuroanatomy", "Embryology", "Histology", "Genetics"] },
+      { id: "physiology", name: "Physiology", w: 10, aliases: ["physiology", "physio"], topics: ["General & nerve-muscle", "Blood", "CVS", "Respiratory", "Renal", "GIT", "Endocrine", "Reproductive", "Neurophysiology", "Special senses"] },
+      { id: "biochemistry", name: "Biochemistry", w: 10, aliases: ["biochemistry", "biochem", "bio chemistry"], topics: ["Enzymes", "Carbohydrate metabolism", "Lipid metabolism", "Protein & amino acids", "Vitamins & minerals", "Molecular biology", "Inborn errors of metabolism", "Nutrition"] },
+      { id: "pathology", name: "Pathology", w: 15, aliases: ["pathology", "patho"], topics: ["Cell injury", "Inflammation & repair", "Hemodynamics", "Immunity", "Neoplasia", "Genetic disorders", "Hematology", "CVS pathology", "Renal pathology", "GIT & liver pathology", "CNS pathology"] },
+      { id: "pharmacology", name: "Pharmacology", w: 14, aliases: ["pharmacology", "pharma", "pharmac"], topics: ["General pharmacology", "ANS", "CVS drugs", "CNS drugs", "Autacoids & NSAIDs", "Endocrine drugs", "Chemotherapy - antimicrobials", "Anticancer drugs", "Antidotes & toxicology", "Recent drugs"] },
+      { id: "microbiology", name: "Microbiology", w: 13, aliases: ["microbiology", "micro"], topics: ["General microbiology", "Immunology", "Bacteriology", "Virology", "Mycology", "Parasitology", "Sterilisation & lab methods"] },
+      { id: "fmt", name: "Forensic Medicine", w: 7, aliases: ["forensic", "fmt", "forensic medicine", "toxicology"], topics: ["Identification", "Thanatology", "Injuries", "Asphyxial deaths", "Sexual offences", "Toxicology", "Legal procedures & IPC/BNS"] },
+      { id: "psm", name: "Community Medicine (PSM)", w: 20, aliases: ["psm", "spm", "community medicine", "preventive", "social medicine"], topics: ["Epidemiology", "Biostatistics", "Screening", "Communicable diseases", "Non-communicable diseases", "National health programmes", "Nutrition", "Environment & occupational health", "MCH & family planning", "Health care delivery in India", "Vaccines & immunisation"] },
+      { id: "medicine", name: "Medicine", w: 20, aliases: ["medicine", "general medicine", "internal medicine"], topics: ["Cardiology", "Respiratory", "Gastroenterology & hepatology", "Nephrology", "Endocrinology", "Neurology", "Hematology", "Rheumatology", "Infectious diseases", "Critical care & ECG"] },
+      { id: "surgery", name: "Surgery", w: 18, aliases: ["surgery", "general surgery"], topics: ["Trauma & burns", "Breast", "Thyroid & endocrine surgery", "Hernia", "Hepatobiliary & pancreas", "Stomach & intestines", "Colorectal", "Urology", "Vascular", "Neurosurgery", "Paediatric surgery"] },
+      { id: "obg", name: "Obstetrics & Gynaecology", w: 18, aliases: ["obg", "obgyn", "obstetrics", "gynaecology", "gynecology", "gynae", "gyne"], topics: ["Physiology of pregnancy", "Antenatal care", "Labour", "Obstetric haemorrhage", "Hypertensive disorders", "Medical disorders in pregnancy", "Menstrual disorders", "Infertility", "Contraception", "Gynaecological oncology"] },
+      { id: "pediatrics", name: "Paediatrics", w: 8, aliases: ["pediatrics", "paediatrics", "peds", "paeds", "pediatric"], topics: ["Growth & development", "Neonatology", "Nutrition & malnutrition", "Immunisation", "Genetic & metabolic", "Paediatric infections", "Paediatric cardiology", "Paediatric emergencies"] },
+      { id: "ent", name: "ENT", w: 8, aliases: ["ent", "e n t", "ear nose throat", "otorhinolaryngology"], topics: ["Ear", "Nose & PNS", "Pharynx", "Larynx", "Head & neck tumours", "Audiology"] },
+      { id: "ophthalmology", name: "Ophthalmology", w: 8, aliases: ["ophthalmology", "ophthal", "ophtha", "eye"], topics: ["Cornea & conjunctiva", "Lens & cataract", "Glaucoma", "Uvea", "Retina", "Neuro-ophthalmology", "Squint", "Community ophthalmology"] },
+      { id: "orthopedics", name: "Orthopaedics", w: 5, aliases: ["orthopedics", "orthopaedics", "ortho"], topics: ["Fractures upper limb", "Fractures lower limb", "Nerve injuries", "Bone tumours", "Infections", "Paediatric ortho", "Spine"] },
+      { id: "dermatology", name: "Dermatology", w: 4, aliases: ["dermatology", "derma", "derm", "skin"], topics: ["Papulosquamous disorders", "Vesiculobullous disorders", "Infections", "Leprosy", "STDs", "Pigmentary disorders"] },
+      { id: "psychiatry", name: "Psychiatry", w: 4, aliases: ["psychiatry", "psych", "psychology"], topics: ["Schizophrenia", "Mood disorders", "Anxiety disorders", "Substance use", "Psychopharmacology", "Child psychiatry"] },
+      { id: "anesthesia", name: "Anaesthesia", w: 4, aliases: ["anesthesia", "anaesthesia", "anesthesiology"], topics: ["Airway", "Inhalational agents", "IV agents", "Muscle relaxants", "Local & regional", "CPR & monitoring"] },
+      { id: "radiology", name: "Radiology", w: 4, aliases: ["radiology", "radio", "radiodiagnosis"], topics: ["Imaging modalities", "Chest imaging", "Neuroimaging", "Radiotherapy", "Contrast & safety"] }
+    ];
+    byId = Object.fromEntries(SUBJECTS.map((s) => [s.id, s]));
+    subjectName = (id) => byId[id]?.name || id;
+  }
+});
+
+// js/stats.js
+var stats_exports = {};
+__export(stats_exports, {
+  addMistake: () => addMistake,
+  addStudyMinutes: () => addStudyMinutes,
+  currentStreak: () => currentStreak,
+  daysLeft: () => daysLeft,
+  markActive: () => markActive,
+  recordAttempt: () => recordAttempt,
+  resolveMistake: () => resolveMistake,
+  subjectStats: () => subjectStats,
+  summaryForAI: () => summaryForAI,
+  totals: () => totals,
+  weakAreas: () => weakAreas
+});
+function markActive() {
+  const t = today();
+  if (S.streak.last === t) return;
+  const y = /* @__PURE__ */ new Date();
+  y.setDate(y.getDate() - 1);
+  S.streak.count = S.streak.last === today(y) ? S.streak.count + 1 : 1;
+  S.streak.last = t;
+  save();
+}
+function currentStreak() {
+  const y = /* @__PURE__ */ new Date();
+  y.setDate(y.getDate() - 1);
+  return S.streak.last === today() || S.streak.last === today(y) ? S.streak.count : 0;
+}
+function recordAttempt(q, correct, mode = "practice") {
+  S.attempts.push({ s: q.subject, t: q.topic || "", c: correct ? 1 : 0, ts: Date.now(), m: mode });
+  if (!correct) addMistake(q);
+  else if (mode === "review") resolveMistake(q.id);
+  markActive();
+  save();
+}
+function addMistake(q) {
+  if (S.mistakes.some((m) => m.id === q.id)) return;
+  S.mistakes.push({ ...q, due: Date.now() + 864e5, box: 0 });
+}
+function resolveMistake(id) {
+  const m = S.mistakes.find((x) => x.id === id);
+  if (!m) return;
+  m.box++;
+  if (m.box >= 2) S.mistakes = S.mistakes.filter((x) => x.id !== id);
+  else m.due = Date.now() + 3 * 864e5;
+}
+function addStudyMinutes(min) {
+  const t = today();
+  S.studyLog[t] = (S.studyLog[t] || 0) + min;
+  markActive();
+  save();
+}
+function subjectStats(sinceDays = 0) {
+  const since = sinceDays ? Date.now() - sinceDays * 864e5 : 0;
+  const out = Object.fromEntries(SUBJECTS.map((s) => [s.id, { n: 0, c: 0 }]));
+  for (const a of S.attempts) {
+    if (a.ts < since || !out[a.s]) continue;
+    out[a.s].n++;
+    out[a.s].c += a.c;
+  }
+  return out;
+}
+function weakAreas(k = 5) {
+  const map = {};
+  for (const a of S.attempts) {
+    const key = `${a.s}|${a.t}`;
+    map[key] || (map[key] = { s: a.s, t: a.t, n: 0, c: 0 });
+    map[key].n++;
+    map[key].c += a.c;
+  }
+  return Object.values(map).filter((x) => x.n >= 3).map((x) => ({ ...x, acc: x.c / x.n })).sort((a, b) => a.acc - b.acc || b.n - a.n).slice(0, k);
+}
+function totals() {
+  const n = S.attempts.length, c = S.attempts.reduce((a, x) => a + x.c, 0);
+  const t = today();
+  const todayN = S.attempts.filter((a) => today(new Date(a.ts)) === t);
+  return { n, c, acc: n ? c / n : 0, todayN: todayN.length, todayC: todayN.reduce((a, x) => a + x.c, 0), todayMin: S.studyLog[t] || 0 };
+}
+function daysLeft() {
+  if (!S.settings.examDate) return null;
+  const d = /* @__PURE__ */ new Date(S.settings.examDate + "T09:00:00");
+  return Math.max(0, Math.ceil((d - Date.now()) / 864e5));
+}
+function summaryForAI() {
+  const t = totals();
+  const ss = subjectStats();
+  const subj = Object.entries(ss).filter(([, v]) => v.n).map(([id, v]) => `${subjectName(id)} ${Math.round(v.c / v.n * 100)}% (${v.n}q)`).join("; ");
+  const untouched = SUBJECTS.filter((s) => !ss[s.id].n).map((s) => s.name).join(", ");
+  const weak = weakAreas(6).map((w) => `${subjectName(w.s)} \u2013 ${w.t || "mixed"} ${Math.round(w.acc * 100)}%`).join("; ");
+  const lastMock = S.mocks.at(-1);
+  const recentJ = S.journal.slice(-3).map((j) => `${j.date}: ${j.hours}h, mood ${j.mood}/5, struggles: ${j.hard || "-"}`).join(" | ");
+  const week = Array.from({ length: 7 }, (_, i) => {
+    const d = /* @__PURE__ */ new Date();
+    d.setDate(d.getDate() - i);
+    return S.studyLog[today(d)] || 0;
+  }).reduce((a, b) => a + b, 0);
+  return [
+    `Student name: ${S.settings.name || "Doctor"}`,
+    `Today: ${today()}. Exam date: ${S.settings.examDate || "not set"}${daysLeft() !== null ? ` (${daysLeft()} days left)` : ""}. Target study hours/day: ${S.settings.dailyHours}.`,
+    `Questions attempted: ${t.n}, overall accuracy ${Math.round(t.acc * 100)}%. Today: ${t.todayN} questions, ${Math.round(t.todayMin)} focused minutes. Last 7 days focused minutes: ${Math.round(week)}. Streak: ${currentStreak()} days.`,
+    `Subject accuracy: ${subj || "no data yet"}.`,
+    `Not yet practised: ${untouched || "none"}.`,
+    `Weakest topics: ${weak || "not enough data"}.`,
+    `Pending mistakes to review: ${S.mistakes.length}. Flashcards due: ${S.cards.filter((c) => c.due <= Date.now()).length}.`,
+    lastMock ? `Last mock (${lastMock.date}): ${lastMock.score}/${lastMock.max}, ${lastMock.correct} correct, ${lastMock.wrong} wrong of ${lastMock.total}.` : "No mock test taken yet.",
+    recentJ ? `Recent check-ins: ${recentJ}` : ""
+  ].filter(Boolean).join("\n");
+}
+var init_stats = __esm({
+  "js/stats.js"() {
+    init_store();
+    init_syllabus();
+  }
+});
+
+// js/app.js
+init_store();
+
+// js/ui.js
+var $ = (sel, root6 = document) => root6.querySelector(sel);
+function esc(s = "") {
+  return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+}
+function md(src = "") {
+  const lines = esc(src).split("\n");
+  let html = "", list = null;
+  const inline = (s) => s.replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>").replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>");
+  const close = () => {
+    if (list) {
+      html += `</${list}>`;
+      list = null;
+    }
+  };
+  for (const raw of lines) {
+    const line = raw.trimEnd();
+    let m;
+    if (m = line.match(/^\s*[-*•]\s+(.*)/)) {
+      if (list !== "ul") {
+        close();
+        html += "<ul>";
+        list = "ul";
+      }
+      html += `<li>${inline(m[1])}</li>`;
+      continue;
+    }
+    if (m = line.match(/^\s*\d+[.)]\s+(.*)/)) {
+      if (list !== "ol") {
+        close();
+        html += "<ol>";
+        list = "ol";
+      }
+      html += `<li>${inline(m[1])}</li>`;
+      continue;
+    }
+    close();
+    if (m = line.match(/^#{1,4}\s+(.*)/)) {
+      html += `<h3>${inline(m[1])}</h3>`;
+      continue;
+    }
+    if (line.trim()) html += `<p>${inline(line)}</p>`;
+  }
+  close();
+  return html;
+}
+function toast(msg, type = "", ms = 3200) {
+  const el = document.createElement("div");
+  el.className = `toast ${type}`;
+  el.textContent = msg;
+  document.getElementById("toasts").appendChild(el);
+  setTimeout(() => el.remove(), ms);
+}
+var fmtMin = (m) => m >= 60 ? `${Math.floor(m / 60)}h ${Math.round(m % 60)}m` : `${Math.round(m)}m`;
+var pct = (a, b) => b ? Math.round(a / b * 100) : 0;
+var loader = (text = "Thinking\u2026") => `<div class="empty"><span class="loader"></span> <span>${esc(text)}</span></div>`;
+function noKeyNotice() {
+  return `<div class="notice">AI features need a free Google Gemini API key. <a href="#/settings">Add it in Settings</a> \u2014 until then you can use the offline question bank.</div>`;
+}
+function download(name, text, type = "application/json") {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([text], { type }));
+  a.download = name;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1e3);
+}
+var P = {
+  home: '<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  practice: '<path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/>',
+  mock: '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/>',
+  mentor: '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 21l1.9-5.4A8 8 0 1 1 21 12z"/>',
+  daily: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  cards: '<rect x="3" y="6" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/>',
+  plan: '<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/>',
+  settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
+  speaker: '<path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/>'
+};
+var icon = (name) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${P[name] || ""}</svg>`;
+
+// js/nav.js
+var go = (route2) => {
+  if (location.hash !== "#/" + route2) location.hash = "#/" + route2;
+  else window.dispatchEvent(new HashChangeEvent("hashchange"));
+};
+var currentRoute = () => location.hash.replace(/^#\/?/, "").split("?")[0] || "home";
+
+// js/app.js
+init_stats();
+
+// js/theme.js
+init_store();
+function applyTheme() {
+  const t = S.settings.theme;
+  if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+  else delete document.documentElement.dataset.theme;
+}
+
+// js/voice.js
+init_store();
+var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+var canListen = !!SR;
+var canSpeak = "speechSynthesis" in window;
+var rec = null;
+var active = false;
+var keep = false;
+var speaking = false;
+var token = 0;
+var onText = null;
+var onState = null;
+function makeRec() {
+  const r = new SR();
+  r.lang = S.settings.lang === "te" ? "te-IN" : "en-IN";
+  r.interimResults = true;
+  r.continuous = false;
+  r.maxAlternatives = 1;
+  r.onresult = (e) => {
+    let interim = "", final = "";
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const t = e.results[i][0].transcript;
+      if (e.results[i].isFinal) final += t;
+      else interim += t;
+    }
+    onState?.({ interim: interim || final });
+    if (final.trim()) onText?.(final.trim());
+  };
+  r.onerror = (e) => {
+    if (e.error === "not-allowed" || e.error === "service-not-allowed") {
+      keep = false;
+      onState?.({ error: "Microphone permission was denied." });
+    } else if (!["no-speech", "aborted"].includes(e.error)) onState?.({ error: `Voice error: ${e.error}` });
+  };
+  r.onend = () => {
+    active = false;
+    if (keep && !speaking) setTimeout(() => {
+      if (keep && !speaking && !active) begin();
+    }, 250);
+    else if (!keep && !speaking) onState?.({ on: false });
+  };
+  return r;
+}
+function begin() {
+  try {
+    rec = makeRec();
+    rec.start();
+    active = true;
+    onState?.({ on: true });
+  } catch {
+    active = false;
+  }
+}
+function startListening({ continuous = false, onText: t, onState: s } = {}) {
+  if (!SR) {
+    s?.({ error: "Voice input is not supported in this browser. Use Chrome or Edge." });
+    return;
+  }
+  onText = t;
+  onState = s;
+  keep = continuous;
+  stopSpeaking();
+  begin();
+}
+function stopListening() {
+  keep = false;
+  try {
+    rec?.abort();
+  } catch {
+  }
+  active = false;
+  onState?.({ on: false });
+}
+var isListening = () => active || keep;
+function pickVoice(lang) {
+  const v = speechSynthesis.getVoices().map((x) => ({ x, l: x.lang.replace("_", "-").toLowerCase() }));
+  if (lang === "te-IN") return v.find((o) => o.l.startsWith("te"))?.x || null;
+  return (v.find((o) => o.l === "en-in") || v.find((o) => o.l.startsWith("en-gb")) || v.find((o) => o.l.startsWith("en")))?.x || null;
+}
+function chunk(text) {
+  const parts = text.match(/[^.!?।\n]+[.!?।]?/g) || [text];
+  const out = [];
+  let cur = "";
+  for (const p of parts) {
+    if ((cur + p).length > 200 && cur) {
+      out.push(cur);
+      cur = "";
+    }
+    cur += p;
+  }
+  if (cur.trim()) out.push(cur);
+  return out;
+}
+function speak(text) {
+  if (!canSpeak || !text) return Promise.resolve();
+  speechSynthesis.cancel();
+  const my = ++token;
+  const telugu = /[ఀ-౿]/.test(text);
+  const lang = telugu ? "te-IN" : "en-IN";
+  const voice = pickVoice(lang);
+  if (active) {
+    try {
+      rec.abort();
+    } catch {
+    }
+  }
+  speaking = true;
+  const pieces = chunk(text.replace(/[*#_`>]/g, ""));
+  return new Promise((resolve) => {
+    pieces.forEach((c, i) => {
+      const u = new SpeechSynthesisUtterance(c);
+      u.lang = lang;
+      if (voice) u.voice = voice;
+      u.rate = Number(S.settings.rate) || 1;
+      if (i === pieces.length - 1) {
+        u.onend = u.onerror = () => {
+          if (my !== token) return resolve();
+          speaking = false;
+          if (keep && !active) begin();
+          resolve();
+        };
+      }
+      speechSynthesis.speak(u);
+    });
+  });
+}
+function stopSpeaking() {
+  token++;
+  if (canSpeak) speechSynthesis.cancel();
+  speaking = false;
+}
+if (canSpeak) speechSynthesis.getVoices();
+
+// js/commands.js
+init_syllabus();
+
+// js/quiz.js
+init_store();
+
+// js/questions.js
+init_store();
+
+// js/gemini.js
+init_store();
+var AIError = class extends Error {
+};
+var hasKey = () => !!S.settings.apiKey?.trim();
+function langInstruction() {
+  return S.settings.lang === "te" ? "Reply in simple, friendly Telugu (\u0C24\u0C46\u0C32\u0C41\u0C17\u0C41 script). Keep medical terms, drug names, investigations and exam keywords in English within the Telugu sentences." : "Reply in clear Indian English.";
+}
+var sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+async function gemini({ system: system2, prompt, messages, json = false, temperature = 0.8, signal } = {}) {
+  const key = S.settings.apiKey?.trim();
+  if (!key) throw new AIError("Add your free Gemini API key in Settings to use AI features.");
+  const model = (S.settings.model || "gemini-2.5-flash").trim();
+  const contents = messages ? messages.map((m) => ({ role: m.role === "user" ? "user" : "model", parts: [{ text: m.text }] })) : [{ role: "user", parts: [{ text: prompt }] }];
+  const body = { contents, generationConfig: { temperature } };
+  if (system2) body.systemInstruction = { parts: [{ text: system2 }] };
+  if (json) body.generationConfig.responseMimeType = "application/json";
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
+  let lastErr;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    let res;
+    try {
+      res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-goog-api-key": key },
+        body: JSON.stringify(body),
+        signal
+      });
+    } catch (e) {
+      if (e.name === "AbortError") throw e;
+      lastErr = new AIError("Network error \u2014 check your internet connection.");
+      await sleep(800 * (attempt + 1));
+      continue;
+    }
+    if (res.ok) {
+      const data = await res.json();
+      const cand = data.candidates?.[0];
+      const text = (cand?.content?.parts || []).filter((p) => !p.thought).map((p) => p.text || "").join("").trim();
+      if (!text) throw new AIError(cand?.finishReason === "SAFETY" ? "The AI declined this request." : "Empty response from AI. Try again.");
+      return json ? parseJSON(text) : text;
+    }
+    let msg = `AI error ${res.status}`, retryMs = 0;
+    try {
+      const e = await res.json();
+      msg = e.error?.message || msg;
+      const d = (e.error?.details || []).find((x) => x.retryDelay)?.retryDelay;
+      if (d) retryMs = Math.min(4e4, parseFloat(d) * 1e3 + 500);
+    } catch {
+    }
+    if (res.status === 400 && /api key/i.test(msg)) throw new AIError("Your Gemini API key looks invalid. Check it in Settings.");
+    if (res.status === 403) throw new AIError("API key not permitted (403). Create a new key at aistudio.google.com.");
+    if (res.status === 404) throw new AIError(`Model "${model}" not found. Pick another model in Settings.`);
+    lastErr = new AIError(res.status === 429 ? "Rate limit reached on the free tier \u2014 wait a minute and try again." : msg);
+    if ((res.status === 429 || res.status >= 500) && attempt < 2) {
+      await sleep(retryMs || 2e3 * (attempt + 1));
+      continue;
+    }
+    throw lastErr;
+  }
+  throw lastErr;
+}
+function parseJSON(t) {
+  const clean = t.trim().replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/, "");
+  try {
+    return JSON.parse(clean);
+  } catch {
+  }
+  const m = clean.match(/[[{][\s\S]*[\]}]/);
+  if (m) {
+    try {
+      return JSON.parse(m[0]);
+    } catch {
+    }
+  }
+  throw new AIError("AI returned an unreadable answer. Please try again.");
+}
+
+// js/bank.js
+var RAW = [
+  ["anatomy", "Head & neck", "A patient cannot abduct the right eye; on looking right there is horizontal diplopia. Which cranial nerve is most likely injured?", ["Oculomotor", "Trochlear", "Abducens", "Facial"], 2, "Lateral rectus, the only abductor of the eye, is supplied by the abducens nerve (CN VI). Oculomotor supplies most other extraocular muscles; trochlear supplies superior oblique; facial nerve has no extraocular supply.", "LR6 SO4 \u2014 rest by CN III."],
+  ["anatomy", "Upper limb", "After a radical mastectomy, a woman shows winging of the scapula when pushing against a wall. Which nerve was injured?", ["Thoracodorsal nerve", "Long thoracic nerve", "Axillary nerve", "Suprascapular nerve"], 1, "The long thoracic nerve (C5\u2013C7) supplies serratus anterior, which holds the scapula against the chest wall. Its injury, common in axillary surgery, causes medial winging.", "Serratus anterior palsy = winged scapula."],
+  ["physiology", "CVS", "The normal pacemaker of the heart is:", ["AV node", "SA node", "Bundle of His", "Purkinje fibres"], 1, "The SA node has the fastest intrinsic rate of spontaneous depolarisation (about 60\u2013100/min) and therefore sets the heart rate, overriding slower latent pacemakers.", "Fastest firing tissue sets the rhythm."],
+  ["physiology", "Renal", "The normal glomerular filtration rate in a healthy adult is approximately:", ["60 mL/min", "90 mL/min", "125 mL/min", "180 mL/min"], 2, "Normal GFR is about 125 mL/min (\u2248180 L/day). 180 L/day is the daily filtered volume, a common distractor.", "GFR 125 mL/min = 180 L/day."],
+  ["biochemistry", "Vitamins & minerals", "A chronic alcoholic presents with confusion, ophthalmoplegia and ataxia. Deficiency of which vitamin is responsible?", ["Pyridoxine", "Thiamine", "Niacin", "Cobalamin"], 1, "Wernicke encephalopathy results from thiamine (B1) deficiency. Thiamine should be given before glucose to avoid precipitating it.", "Give thiamine before glucose."],
+  ["biochemistry", "Inborn errors of metabolism", "An infant develops jaundice, vomiting and cataract after starting milk feeds. The most likely deficient enzyme is:", ["Galactokinase", "Galactose-1-phosphate uridyltransferase", "Aldolase B", "Glucose-6-phosphatase"], 1, "Classic galactosemia is due to GALT deficiency, causing liver dysfunction, vomiting, cataract and E. coli sepsis. Galactokinase deficiency causes cataract only; aldolase B deficiency is hereditary fructose intolerance.", "Classic galactosemia = GALT; E. coli sepsis risk."],
+  ["pathology", "Hematology", "Reed\u2013Sternberg cells are characteristic of:", ["Burkitt lymphoma", "Hodgkin lymphoma", "Multiple myeloma", "Hairy cell leukaemia"], 1, "Reed\u2013Sternberg cells (CD15+, CD30+) are the neoplastic cells of classical Hodgkin lymphoma.", "RS cells: CD15 and CD30 positive."],
+  ["pathology", "Hematology", "The Philadelphia chromosome t(9;22) is classically associated with:", ["CML", "CLL", "AML-M3", "Burkitt lymphoma"], 0, "t(9;22) creates the BCR-ABL fusion tyrosine kinase in CML, which is the target of imatinib. AML-M3 is t(15;17); Burkitt is t(8;14).", "BCR-ABL \u2192 imatinib."],
+  ["pharmacology", "Antidotes & toxicology", "The specific antidote for paracetamol poisoning is:", ["Flumazenil", "N-acetylcysteine", "Naloxone", "Fomepizole"], 1, "N-acetylcysteine replenishes glutathione and detoxifies NAPQI. Flumazenil is for benzodiazepines, naloxone for opioids, fomepizole for methanol/ethylene glycol.", "NAC is most effective within 8 hours."],
+  ["pharmacology", "CVS drugs", "Heparin overdose is reversed by:", ["Vitamin K", "Protamine sulfate", "Fresh frozen plasma", "Tranexamic acid"], 1, "Protamine sulfate, a basic protein, binds acidic heparin and neutralises it. Vitamin K reverses warfarin.", "Heparin \u2192 protamine; warfarin \u2192 vitamin K."],
+  ["microbiology", "Bacteriology", "Weil disease is caused by:", ["Borrelia recurrentis", "Leptospira interrogans", "Treponema pallidum", "Rickettsia prowazekii"], 1, "Weil disease is the severe icterohaemorrhagic form of leptospirosis, with jaundice, renal failure and haemorrhage, typically after exposure to rat urine\u2013contaminated water.", "Leptospirosis: rat urine, floods, farmers."],
+  ["microbiology", "Virology", "Negri bodies are seen in:", ["Rabies", "Herpes simplex", "Cytomegalovirus", "Measles"], 0, "Negri bodies are eosinophilic intracytoplasmic inclusions in neurons (hippocampal pyramidal and Purkinje cells) in rabies.", "Negri bodies: hippocampus and Purkinje cells."],
+  ["fmt", "Asphyxial deaths", "Fracture of the hyoid bone is most characteristic of:", ["Hanging", "Throttling", "Drowning", "Smothering"], 1, "Throttling (manual strangulation) applies direct pressure to the neck and commonly fractures the hyoid bone and thyroid cartilage.", "Throttling \u2192 hyoid fracture."],
+  ["psm", "Environment & occupational health", "The minimum free residual chlorine required in drinking water after one hour of contact is:", ["0.1 mg/L", "0.5 mg/L", "1 mg/L", "2 mg/L"], 1, "For effective disinfection, 0.5 mg/L of free residual chlorine should remain after a contact period of one hour.", "0.5 mg/L after 1 hour."],
+  ["psm", "Vaccines & immunisation", "Under India\u2019s Universal Immunisation Programme, the first dose of MR vaccine is given at:", ["6 weeks", "14 weeks", "9\u201312 months", "16\u201324 months"], 2, "MR-1 is given at 9\u201312 completed months and MR-2 at 16\u201324 months under the UIP schedule.", "MR1: 9\u201312 months; MR2: 16\u201324 months."],
+  ["medicine", "Critical care & ECG", "The first-line drug in anaphylactic shock is:", ["IV hydrocortisone", "IM adrenaline", "IV chlorpheniramine", "Nebulised salbutamol"], 1, "IM adrenaline 0.5 mg (1:1000) in the anterolateral thigh is first-line. Steroids and antihistamines are adjuncts and do not treat shock or airway oedema acutely.", "Adrenaline 1:1000, 0.5 mg IM."],
+  ["medicine", "Endocrinology", "Kussmaul breathing is a feature of:", ["Metabolic alkalosis", "Metabolic acidosis", "Respiratory acidosis", "Respiratory alkalosis"], 1, "Deep, rapid Kussmaul respiration is respiratory compensation for metabolic acidosis, classically in diabetic ketoacidosis.", "DKA \u2192 Kussmaul breathing."],
+  ["surgery", "Hepatobiliary & pancreas", "Fever with chills, jaundice and right upper quadrant pain suggests:", ["Acute cholecystitis", "Acute cholangitis", "Acute pancreatitis", "Liver abscess"], 1, "This is Charcot\u2019s triad of acute ascending cholangitis. Adding hypotension and altered sensorium gives Reynolds\u2019 pentad.", "Charcot triad + shock + confusion = Reynolds pentad."],
+  ["surgery", "Hernia", "The most common type of hernia in women is:", ["Femoral", "Indirect inguinal", "Direct inguinal", "Umbilical"], 1, "Indirect inguinal hernia is the commonest hernia in both sexes. Femoral hernia is more common in women than in men but is still less common than inguinal hernia.", "Femoral: more in females, but inguinal is still commonest."],
+  ["obg", "Hypertensive disorders", "The drug of choice to control seizures in eclampsia is:", ["Phenytoin", "Diazepam", "Magnesium sulfate", "Labetalol"], 2, "Magnesium sulfate is superior to phenytoin and diazepam for preventing recurrent eclamptic fits. Monitor knee jerk, respiratory rate and urine output; antidote is calcium gluconate.", "MgSO4 toxicity antidote: calcium gluconate."],
+  ["obg", "Obstetric haemorrhage", "The most common site of ectopic pregnancy is:", ["Isthmus", "Ampulla", "Interstitial part", "Ovary"], 1, "The ampulla is the commonest site. The isthmus tends to rupture earliest; interstitial pregnancy ruptures latest and bleeds most.", "Ampulla commonest; isthmus ruptures earliest."],
+  ["pediatrics", "Growth & development", "A normally developing child can sit without support at about:", ["3 months", "5 months", "8 months", "12 months"], 2, "Children sit with support around 6 months and without support around 8 months; standing with support is at about 9 months.", "Sits alone ~8 months; walks alone ~13 months."],
+  ["ent", "Nose & PNS", "Little\u2019s area, the common site of epistaxis, is located at:", ["Posterior superior septum", "Anteroinferior part of the nasal septum", "Inferior turbinate", "Roof of the nose"], 1, "Kiesselbach\u2019s plexus lies in Little\u2019s area on the anteroinferior septum, where several arteries anastomose; it accounts for most anterior bleeds.", "Kiesselbach: anterior ethmoidal, sphenopalatine, greater palatine, superior labial."],
+  ["ophthalmology", "Retina", "Sudden painless loss of vision with a cherry-red spot at the macula suggests:", ["Central retinal vein occlusion", "Central retinal artery occlusion", "Retinal detachment", "Vitreous haemorrhage"], 1, "In CRAO the ischaemic, opaque retina surrounds the fovea, where the choroidal circulation shows through as a cherry-red spot.", 'CRVO = "blood and thunder" fundus.'],
+  ["orthopedics", "Nerve injuries", "The nerve most commonly injured in extension-type supracondylar fracture of the humerus is:", ["Radial nerve", "Ulnar nerve", "Anterior interosseous nerve", "Axillary nerve"], 2, 'The anterior interosseous branch of the median nerve is most frequently injured, causing inability to make the "OK" sign. Ulnar nerve injury is more common with flexion-type fractures and iatrogenic pinning.', "AIN palsy: cannot make OK sign."],
+  ["dermatology", "Papulosquamous disorders", "Wickham\u2019s striae are seen in:", ["Psoriasis", "Lichen planus", "Pityriasis rosea", "Pemphigus"], 1, "Wickham\u2019s striae are fine white lines on the surface of lichen planus papules, due to focal hypergranulosis.", "Lichen planus: 6 Ps \u2014 purple, pruritic, polygonal, planar papules and plaques."],
+  ["psychiatry", "Substance use", "The drugs of choice for alcohol withdrawal are:", ["Antipsychotics", "Benzodiazepines", "SSRIs", "Disulfiram"], 1, "Benzodiazepines (e.g. chlordiazepoxide, or lorazepam in liver disease) prevent withdrawal seizures and delirium tremens. Disulfiram is for maintaining abstinence, not withdrawal.", "Liver disease \u2192 lorazepam/oxazepam."],
+  ["anesthesia", "Muscle relaxants", "The drug used to treat malignant hyperthermia is:", ["Dantrolene", "Neostigmine", "Sugammadex", "Baclofen"], 0, "Dantrolene blocks calcium release from the sarcoplasmic reticulum via the ryanodine receptor (RyR1). Triggers include volatile anaesthetics and succinylcholine.", "Earliest sign: rise in end-tidal CO2."],
+  ["radiology", "Neuroimaging", "The initial investigation of choice for suspected acute subarachnoid haemorrhage is:", ["MRI brain", "Non-contrast CT head", "Cerebral angiography", "Lumbar puncture"], 1, "Non-contrast CT is fast and highly sensitive in the first hours. If it is negative but suspicion remains, lumbar puncture for xanthochromia is done; angiography locates the aneurysm.", "Thunderclap headache \u2192 NCCT first."],
+  ["pharmacology", "Chemotherapy - antimicrobials", "Red-orange discolouration of urine and tears is caused by:", ["Isoniazid", "Rifampicin", "Ethambutol", "Pyrazinamide"], 1, "Rifampicin causes harmless orange-red discolouration of body fluids and can stain contact lenses. It is also a potent enzyme inducer.", "Rifampicin: enzyme inducer, orange secretions."]
+];
+var BANK = RAW.map(([subject, topic, stem, options, answer, explanation, pearl], i) => ({
+  id: "bank-" + i,
+  subject,
+  topic,
+  difficulty: "moderate",
+  stem,
+  options,
+  answer,
+  explanation,
+  pearl,
+  src: "bank"
+}));
+
+// js/questions.js
+init_syllabus();
+var SYSTEM = `You are a senior NEET PG question setter who writes questions in the NBEMS style.
+- Write single-best-answer MCQs with exactly 4 options and one unambiguous correct answer.
+- Prefer short clinical vignettes and "most common / drug of choice / investigation of choice / next best step" formats seen in recent NEET PG papers; include image-free recall and concept questions too.
+- Facts must be accurate per standard Indian references (Robbins, Harrison, Bailey & Love, KD Tripathi, Park's PSM, Williams/DC Dutta, Ghai/Nelson, Dhingra, Khurana, Maheshwari, Reddy FMT) and current Indian national guidelines.
+- Explanations: 3\u20135 sentences \u2014 why the answer is right and why each distractor is wrong. Never refer to option letters or positions (options will be shuffled).
+- "pearl": one crisp high-yield line to remember.
+Return JSON only.`;
+function normalise(raw, fallbackSubject, topic) {
+  const list = Array.isArray(raw) ? raw : raw?.questions || [];
+  const out = [];
+  for (const q of list) {
+    const options = (q.options || []).map((o) => String(o).replace(/^\s*[A-D][).:\-]\s+/i, "").trim());
+    const ans = Number(q.answer ?? q.correct ?? q.answerIndex);
+    if (!q.stem && !q.question) continue;
+    if (options.length !== 4 || !(ans >= 0 && ans <= 3)) continue;
+    const order = shuffle([0, 1, 2, 3]);
+    const subj = byId[q.subject] ? q.subject : Object.values(byId).find((s) => s.name.toLowerCase() === String(q.subject || "").toLowerCase())?.id || fallbackSubject;
+    out.push({
+      id: "ai-" + uid(),
+      subject: subj,
+      topic: q.topic || topic || "",
+      difficulty: q.difficulty || "moderate",
+      stem: String(q.stem || q.question).trim(),
+      options: order.map((i) => options[i]),
+      answer: order.indexOf(ans),
+      explanation: q.explanation || "",
+      pearl: q.pearl || q.highYield || "",
+      src: "ai"
+    });
+  }
+  return out;
+}
+async function generateQuestions({ subjects, topic = "", difficulty = "mixed", style = "mixed", signal }) {
+  const n = subjects.length;
+  const avoid = S.seen.slice(-40).map((s) => `- ${s}`).join("\n");
+  const prompt = `Create ${n} NEW NEET PG MCQs.
+Subjects, one per question in this order: ${subjects.map(subjectName).join(", ")}.
+${topic ? `Topic focus: ${topic}.` : "Spread across high-yield topics; vary them."}
+Difficulty: ${difficulty === "mixed" ? "mix of easy, moderate and hard (NEET PG level)" : difficulty}.
+Style: ${style === "clinical" ? "mostly clinical vignettes" : style === "recall" ? "mostly one-liner recall questions" : "mix of clinical vignettes and one-liners"}.
+Do not repeat these recently asked stems:
+${avoid || "- (none)"}
+
+JSON schema:
+{"questions":[{"subject":"<subject name>","topic":"<specific topic>","difficulty":"easy|moderate|hard","stem":"...","options":["...","...","...","..."],"answer":<0-3 index of correct option>,"explanation":"...","pearl":"..."}]}`;
+  const raw = await gemini({ system: SYSTEM, prompt, json: true, temperature: 0.95, signal });
+  const qs = normalise(raw, subjects[0], topic);
+  qs.forEach((q, i) => {
+    if (!byId[q.subject]) q.subject = subjects[i] || subjects[0];
+  });
+  if (!qs.length) throw new Error("No valid questions returned. Try again.");
+  S.seen.push(...qs.map((q) => q.stem.slice(0, 90)));
+  save();
+  return qs;
+}
+function bankQuestions(n, subject) {
+  let pool = BANK.filter((q) => !subject || q.subject === subject);
+  if (!pool.length) pool = BANK;
+  return shuffle(pool.map((q) => {
+    const order = shuffle([0, 1, 2, 3]);
+    return { ...q, options: order.map((i) => q.options[i]), answer: order.indexOf(q.answer) };
+  })).slice(0, n);
+}
+
+// js/quiz.js
+init_stats();
+init_syllabus();
+
+// js/mentor.js
+init_store();
+init_stats();
+var root = null;
+var busy = false;
+var CHIPS_EN = [
+  "Make me a 7-day plan for my weakest subjects",
+  "Give me 10 high-yield one-liners for Pharmacology",
+  "Mnemonic for cranial nerve nuclei",
+  "How should I revise PSM in the last month?",
+  "I feel demotivated today",
+  "Explain the ECG changes in hyperkalaemia"
+];
+var CHIPS_TE = [
+  "\u0C28\u0C3E weak subjects \u0C15\u0C3F 7 \u0C30\u0C4B\u0C1C\u0C41\u0C32 plan \u0C07\u0C35\u0C4D\u0C35\u0C41",
+  "Pathology high-yield points \u0C1A\u0C46\u0C2A\u0C4D\u0C2A\u0C41",
+  "\u0C08 \u0C30\u0C4B\u0C1C\u0C41 motivation \u0C24\u0C15\u0C4D\u0C15\u0C41\u0C35\u0C17\u0C3E \u0C09\u0C02\u0C26\u0C3F",
+  "Last month revision \u0C0E\u0C32\u0C3E \u0C1A\u0C47\u0C2F\u0C3E\u0C32\u0C3F?"
+];
+function system() {
+  return `You are "Guru", a warm, sharp NEET PG mentor and daily study companion for an Indian MBBS graduate.
+- Teach with accuracy (standard Indian references, current NEET PG/NBEMS pattern and national guidelines). If unsure, say so.
+- Be concise: short paragraphs, bullets, mnemonics, tables in text. Prefer high-yield exam-oriented points.
+- Personalise using the student's live progress below; point out weak areas, suggest next actions inside this app (Practice, Mock test, Flashcards, Daily plan).
+- Support wellbeing: encourage breaks, sleep and realistic goals. If the student expresses serious distress, respond with care and suggest talking to someone they trust or a professional helpline (e.g. Tele-MANAS 14416 in India).
+- ${langInstruction()}
+
+STUDENT PROGRESS (live):
+${summaryForAI()}`;
+}
+function renderMentor(el) {
+  root = el;
+  const chips = S.settings.lang === "te" ? CHIPS_TE : CHIPS_EN;
+  el.innerHTML = `${hasKey() ? "" : noKeyNotice()}
+  <div class="card chat">
+    <div class="card-head"><h3>Guru \u2014 your AI mentor</h3><div class="row"><button class="btn sm" id="cStop">Stop voice</button><button class="btn sm danger" id="cClear">Clear chat</button></div></div>
+    <div class="msgs" id="msgs"></div>
+    <div class="chips">${chips.map((c) => `<button class="chip">${esc(c)}</button>`).join("")}</div>
+    <form class="composer" id="cForm">
+      <textarea id="cInput" rows="1" placeholder="${S.settings.lang === "te" ? "\u0C0F\u0C26\u0C48\u0C28\u0C3E \u0C05\u0C21\u0C17\u0C02\u0C21\u0C3F\u2026 (Enter to send)" : "Ask anything \u2014 concepts, strategy, doubts\u2026 (Enter to send)"}"></textarea>
+      <button class="btn primary" type="submit">Send</button>
+    </form>
+  </div>`;
+  drawMsgs();
+  const input = $("#cInput", el);
+  $("#cForm", el).onsubmit = (e) => {
+    e.preventDefault();
+    const t = input.value.trim();
+    if (t) {
+      input.value = "";
+      sendMessage(t);
+    }
+  };
+  input.onkeydown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      $("#cForm", el).requestSubmit();
+    }
+  };
+  el.querySelectorAll(".chip").forEach((c) => c.onclick = () => sendMessage(c.textContent));
+  $("#cClear", el).onclick = () => {
+    S.chat = [];
+    save();
+    drawMsgs();
+  };
+  $("#cStop", el).onclick = () => stopSpeaking();
+}
+function drawMsgs(typing = false) {
+  const box = document.getElementById("msgs");
+  if (!box) return;
+  if (!S.chat.length && !typing) {
+    box.innerHTML = `<div class="msg model">${md(S.settings.lang === "te" ? `\u0C28\u0C2E\u0C38\u0C4D\u0C24\u0C47 ${S.settings.name ? "Dr. " + S.settings.name : "Doctor"}! \u0C28\u0C47\u0C28\u0C41 \u0C2E\u0C40 NEET PG mentor **Guru**. Concepts, doubts, study plan, motivation \u2014 \u0C0F\u0C26\u0C48\u0C28\u0C3E \u0C05\u0C21\u0C17\u0C02\u0C21\u0C3F. Mic \u0C28\u0C4A\u0C15\u0C4D\u0C15\u0C3F \u0C2E\u0C3E\u0C1F\u0C4D\u0C32\u0C3E\u0C21\u0C35\u0C1A\u0C4D\u0C1A\u0C41 \u0C15\u0C42\u0C21\u0C3E.` : `Hi ${S.settings.name ? "Dr. " + S.settings.name : "Doctor"}! I'm **Guru**, your NEET PG mentor. Ask me about concepts, doubts, strategy or motivation \u2014 or tap the mic and just talk.`)}</div>`;
+    return;
+  }
+  box.innerHTML = S.chat.map((m) => `<div class="msg ${m.role}">${m.role === "user" ? esc(m.text).replace(/\n/g, "<br>") : md(m.text)}</div>`).join("") + (typing ? '<div class="msg model"><span class="typing"><i></i><i></i><i></i></span></div>' : "");
+  box.scrollTop = box.scrollHeight;
+}
+async function sendMessage(text, { voice = false } = {}) {
+  if (busy) return;
+  if (!hasKey()) {
+    toast("Add your Gemini API key in Settings to chat with the mentor.", "bad");
+    return;
+  }
+  S.chat.push({ role: "user", text, ts: Date.now() });
+  save();
+  busy = true;
+  drawMsgs(true);
+  try {
+    const history2 = S.chat.slice(-20).map((m) => ({ role: m.role, text: m.text }));
+    const reply = await gemini({ system: system(), messages: history2, temperature: 0.7 });
+    S.chat.push({ role: "model", text: reply, ts: Date.now() });
+    save();
+    if (voice || S.settings.voiceReplies) speak(reply);
+  } catch (e) {
+    toast(e.message, "bad");
+    S.chat.pop();
+    save();
+  } finally {
+    busy = false;
+    drawMsgs();
+  }
+}
+function askMentor(text, opts) {
+  if (currentRoute() !== "mentor") go("mentor");
+  setTimeout(() => sendMessage(text, opts), 50);
+}
+
+// js/cards.js
+init_store();
+init_syllabus();
+init_stats();
+var root2 = null;
+var tab = "review";
+var flipped = false;
+function addCard({ front, back, subject = "" }) {
+  S.cards.push({ id: uid(), front, back, subject, ef: 2.5, interval: 0, reps: 0, due: Date.now() });
+  save();
+}
+var due = () => S.cards.filter((c) => c.due <= Date.now()).sort((a, b) => a.due - b.due);
+function grade(card, q) {
+  if (q < 3) {
+    card.reps = 0;
+    card.interval = 0;
+    card.due = Date.now() + 10 * 6e4;
+  } else {
+    card.reps++;
+    card.interval = card.reps === 1 ? 1 : card.reps === 2 ? 3 : Math.round(card.interval * card.ef);
+    if (q === 3) card.interval = Math.max(1, Math.round(card.interval * 0.8));
+    card.due = Date.now() + card.interval * 864e5;
+  }
+  card.ef = Math.max(1.3, card.ef + (0.1 - (5 - q) * (0.08 + (5 - q) * 0.02)));
+  markActive();
+  save();
+}
+function renderCards(el) {
+  root2 = el;
+  const d = due();
+  el.innerHTML = `<div class="row" style="margin-bottom:14px">
+    <button class="btn ${tab === "review" ? "primary" : ""}" data-tab="review">Review (${d.length} due)</button>
+    <button class="btn ${tab === "gen" ? "primary" : ""}" data-tab="gen">Generate with AI</button>
+    <button class="btn ${tab === "all" ? "primary" : ""}" data-tab="all">All cards (${S.cards.length})</button></div>
+    <div id="cBody"></div>`;
+  el.querySelectorAll("[data-tab]").forEach((b) => b.onclick = () => {
+    tab = b.dataset.tab;
+    flipped = false;
+    renderCards(el);
+  });
+  const body = $("#cBody", el);
+  if (tab === "review") drawReview(body, d);
+  else if (tab === "gen") drawGen(body);
+  else drawAll(body);
+}
+function drawReview(body, d) {
+  const c = d[0];
+  if (!c) {
+    body.innerHTML = `<div class="card empty">No cards due. ${S.cards.length ? "Come back later or generate more." : "Generate your first deck with AI or add cards from practice questions."}</div>`;
+    return;
+  }
+  body.innerHTML = `<div class="card">
+    <div class="q-meta">${c.subject ? `<span class="tag p">${esc(subjectName(c.subject))}</span>` : ""}<span class="tag">${d.length} due</span></div>
+    <div class="flash ${flipped ? "flipped" : ""}" id="flash"><div class="flash-inner">
+      <div class="flash-face front">${esc(c.front)}</div>
+      <div class="flash-face back"><div>${md(c.back)}</div></div>
+    </div></div>
+    <div class="row" style="justify-content:center;margin-top:14px">${flipped ? `<button class="btn" data-g="0">Again</button><button class="btn" data-g="3">Hard</button><button class="btn primary" data-g="4">Good</button><button class="btn" data-g="5">Easy</button>` : `<button class="btn primary" id="flip">Show answer</button><button class="btn" id="say">Read aloud</button>`}</div>
+  </div>`;
+  $("#flash", body).onclick = () => {
+    flipped = !flipped;
+    renderCards(root2);
+  };
+  if (flipped) body.querySelectorAll("[data-g]").forEach((b) => b.onclick = () => {
+    grade(c, +b.dataset.g);
+    flipped = false;
+    renderCards(root2);
+  });
+  else {
+    $("#flip", body).onclick = () => {
+      flipped = true;
+      renderCards(root2);
+    };
+    $("#say", body).onclick = () => speak(c.front);
+  }
+}
+function drawGen(body) {
+  body.innerHTML = `${hasKey() ? "" : noKeyNotice()}<div class="card"><h3>Generate a high-yield deck</h3>
+    <div class="grid g3">
+      <label class="field">Subject<select id="gSub">${SUBJECTS.map((s) => `<option value="${s.id}">${esc(s.name)}</option>`).join("")}</select></label>
+      <label class="field">Topic<input id="gTopic" type="text" placeholder="e.g. Antitubercular drugs" /></label>
+      <label class="field">Cards<select id="gN"><option>10</option><option selected>15</option><option>25</option></select></label>
+    </div>
+    <div class="row" style="margin-top:12px"><button class="btn primary" id="gGo">Generate</button></div><div id="gOut"></div></div>
+    <div class="card"><h3>Add your own card</h3><div class="grid g2"><label class="field">Front<textarea id="mF"></textarea></label><label class="field">Back<textarea id="mB"></textarea></label></div><button class="btn" id="mAdd" style="margin-top:10px">Add card</button></div>`;
+  $("#gGo", body).onclick = async () => {
+    if (!hasKey()) return toast("Add your Gemini API key in Settings.", "bad");
+    const subject = $("#gSub", body).value, topic = $("#gTopic", body).value.trim() || byId[subject].topics.join(", ");
+    const n = +$("#gN", body).value;
+    $("#gOut", body).innerHTML = loader("Creating flashcards\u2026");
+    try {
+      const raw = await gemini({
+        system: "You create accurate, exam-focused NEET PG flashcards from standard Indian textbooks. JSON only.",
+        prompt: `Create ${n} high-yield flashcards for ${subjectName(subject)} \u2014 ${topic}. Front: a crisp question or cue (max 20 words). Back: the answer with one key supporting fact (max 40 words). Prioritise frequently asked NEET PG facts, "most common", drug of choice, investigation of choice, classic signs, numbers.
+JSON: {"cards":[{"front":"","back":""}]}`,
+        json: true,
+        temperature: 0.7
+      });
+      const cards = (raw.cards || raw || []).filter((c) => c.front && c.back);
+      cards.forEach((c) => addCard({ front: c.front, back: c.back, subject }));
+      toast(`${cards.length} cards added`, "ok");
+      tab = "review";
+      renderCards(root2);
+    } catch (e) {
+      toast(e.message, "bad");
+      $("#gOut", body).innerHTML = "";
+    }
+  };
+  $("#mAdd", body).onclick = () => {
+    const f = $("#mF", body).value.trim(), b = $("#mB", body).value.trim();
+    if (!f || !b) return toast("Fill both sides");
+    addCard({ front: f, back: b });
+    toast("Card added", "ok");
+    $("#mF", body).value = "";
+    $("#mB", body).value = "";
+  };
+}
+function drawAll(body) {
+  if (!S.cards.length) {
+    body.innerHTML = '<div class="card empty">No cards yet.</div>';
+    return;
+  }
+  body.innerHTML = `<div class="card table-wrap"><table><tr><th>Front</th><th>Subject</th><th>Next due</th><th></th></tr>${S.cards.map((c) => `<tr><td>${esc(c.front.slice(0, 100))}</td><td>${esc(subjectName(c.subject) || "-")}</td><td>${new Date(c.due).toLocaleDateString()}</td><td><button class="btn sm danger" data-del="${c.id}">Delete</button></td></tr>`).join("")}</table></div>`;
+  body.querySelectorAll("[data-del]").forEach((b) => b.onclick = () => {
+    S.cards = S.cards.filter((c) => c.id !== b.dataset.del);
+    save();
+    renderCards(root2);
+  });
+}
+function cardsVoice(cmd) {
+  const c = due()[0];
+  if (!c) return false;
+  if (cmd.type === "read") {
+    speak(flipped ? c.back : c.front);
+    return true;
+  }
+  if (cmd.type === "flip" || cmd.type === "explain") {
+    flipped = true;
+    renderCards(root2);
+    speak(c.back);
+    return true;
+  }
+  if (cmd.type === "grade") {
+    grade(c, cmd.q);
+    flipped = false;
+    renderCards(root2);
+    const n = due()[0];
+    if (n) speak(n.front);
+    return true;
+  }
+  return false;
+}
+
+// js/quiz.js
+var L = "ABCD";
+var Q = { p: null, m: null };
+var root3 = null;
+var timerId = null;
+function rerender() {
+  if (!root3 || !document.body.contains(root3)) return;
+  const r = currentRoute();
+  if (r === "practice") renderPractice(root3);
+  else if (r === "mock") renderMock(root3);
+}
+function qBody(q, a, reveal) {
+  return `<div class="q-meta"><span class="tag p">${esc(subjectName(q.subject))}</span>${q.topic ? `<span class="tag">${esc(q.topic)}</span>` : ""}<span class="tag">${esc(q.difficulty || "")}</span></div>
+  <div class="q-stem">${esc(q.stem)}</div>
+  <div class="opts">${q.options.map((o, i) => {
+    let cls = "";
+    if (reveal && a != null) cls = i === q.answer ? "right" : i === a ? "wrong" : "";
+    else if (a === i) cls = "sel";
+    return `<button class="opt ${cls}" data-opt="${i}" ${reveal && a != null ? "disabled" : ""}><b>${L[i]}</b><span>${esc(o)}</span></button>`;
+  }).join("")}</div>`;
+}
+var explainHTML = (q) => `<div class="explain"><strong>Answer: ${L[q.answer]}. ${esc(q.options[q.answer])}</strong>${md(q.explanation)}${q.pearl ? `<div class="pearl">High-yield: ${esc(q.pearl)}</div>` : ""}</div>`;
+var readText = (q) => `${q.stem}. ${q.options.map((o, i) => `Option ${L[i]}: ${o}.`).join(" ")}`;
+function renderPractice(el) {
+  root3 = el;
+  const s = Q.p;
+  if (!s) return drawPracticeSetup(el);
+  if (s.ended) return drawPracticeSummary(el);
+  drawPractice(el);
+}
+function drawPracticeSetup(el) {
+  const n = S.mistakes.length;
+  el.innerHTML = `${hasKey() ? "" : noKeyNotice()}
+  <div class="card">
+    <div class="card-head"><h3>AI question generator</h3><span class="tag p">Unlimited dynamic MCQs</span></div>
+    <div class="grid g2">
+      <label class="field">Subject<select id="pSub"><option value="">All subjects (weighted mix)</option>${SUBJECTS.map((s) => `<option value="${s.id}">${esc(s.name)}</option>`).join("")}</select></label>
+      <label class="field">Topic<select id="pTopic"><option value="">Any high-yield topic</option></select></label>
+      <label class="field">Custom topic (optional)<input id="pCustom" type="text" placeholder="e.g. Hypertension in pregnancy" /></label>
+      <label class="field">Difficulty<select id="pDiff"><option value="mixed">Mixed</option><option value="easy">Easy</option><option value="moderate">Moderate</option><option value="hard">Hard</option></select></label>
+      <label class="field">Style<select id="pStyle"><option value="mixed">Mixed</option><option value="clinical">Clinical vignettes</option><option value="recall">One-liners</option></select></label>
+    </div>
+    <div class="row" style="margin-top:14px"><button class="btn primary" id="pStart" ${hasKey() ? "" : "disabled"}>Start AI practice</button><button class="btn" id="pOffline">Offline quick quiz</button></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><h3>Review your mistakes</h3><span class="tag ${n ? "bad" : ""}">${n} saved</span></div>
+    <p class="muted small">Every question you get wrong is saved here. Answer it correctly twice to clear it.</p>
+    <button class="btn" id="pReview" ${n ? "" : "disabled"}>Start review</button>
+  </div>
+  <div class="card"><h3>Voice tips</h3><p class="muted small">Tap the mic and say <kbd>start quiz on pharmacology</kbd>, <kbd>option B</kbd>, <kbd>next</kbd>, <kbd>explain</kbd>, <kbd>read question</kbd>. Telugu: <kbd>\u0C24\u0C30\u0C41\u0C35\u0C3E\u0C24</kbd> (next), <kbd>\u0C35\u0C3F\u0C35\u0C30\u0C3F\u0C02\u0C1A\u0C41</kbd> (explain), <kbd>\u0C1A\u0C26\u0C41\u0C35\u0C41</kbd> (read).</p></div>`;
+  const sub = $("#pSub", el), top = $("#pTopic", el);
+  sub.onchange = () => {
+    const s = byId[sub.value];
+    top.innerHTML = '<option value="">Any high-yield topic</option>' + (s ? s.topics.map((t) => `<option>${esc(t)}</option>`).join("") : "");
+  };
+  $("#pStart", el).onclick = () => startPractice({ subject: sub.value, topic: $("#pCustom", el).value.trim() || top.value, difficulty: $("#pDiff", el).value, style: $("#pStyle", el).value, source: "ai" });
+  $("#pOffline", el).onclick = () => startPractice({ subject: sub.value, source: "bank" });
+  $("#pReview", el).onclick = () => startPractice({ source: "review" });
+}
+function startPractice(cfg) {
+  if (cfg.source === "ai" && !hasKey()) cfg.source = "bank";
+  Q.p = { cfg, qs: [], idx: 0, ans: {}, loading: false, ended: false, correct: 0, done: 0, used: /* @__PURE__ */ new Set() };
+  if (cfg.source === "review") {
+    Q.p.qs = shuffle(S.mistakes.map((m) => ({ ...m })));
+    if (!Q.p.qs.length) {
+      toast("No saved mistakes yet \u2014 great!");
+      Q.p = null;
+    }
+  } else loadMore();
+  if (currentRoute() === "practice") rerender();
+  else go("practice");
+}
+async function loadMore(n = 5) {
+  const s = Q.p;
+  if (!s || s.loading || s.exhausted) return;
+  s.loading = true;
+  const { cfg } = s;
+  try {
+    let qs;
+    if (cfg.source === "ai") {
+      const subjects = cfg.subject ? Array(n).fill(cfg.subject) : subjectMix(n);
+      qs = await generateQuestions({ subjects, topic: cfg.topic, difficulty: cfg.difficulty, style: cfg.style });
+    } else {
+      qs = bankQuestions(BANK.length, cfg.subject).filter((q) => !s.used.has(q.id)).slice(0, n);
+      if (cfg.subject) qs = qs.filter((q) => q.subject === cfg.subject);
+      if (!qs.length) s.exhausted = true;
+    }
+    if (Q.p !== s) return;
+    qs.forEach((q) => s.used.add(q.id));
+    const waiting = !s.qs[s.idx];
+    s.qs.push(...qs);
+    s.loading = false;
+    if (waiting) rerender();
+    return;
+  } catch (e) {
+    if (Q.p !== s) return;
+    toast(`${e.message} Using the offline bank for now.`, "bad", 5e3);
+    cfg.source = "bank";
+    s.loading = false;
+    return loadMore(n);
+  } finally {
+    s.loading = false;
+  }
+}
+function drawPractice(el) {
+  const s = Q.p, q = s.qs[s.idx];
+  if (!q) {
+    if (s.cfg.source === "review" || s.exhausted) {
+      s.ended = true;
+      return drawPracticeSummary(el);
+    }
+    el.innerHTML = loader("Generating fresh NEET PG questions with AI\u2026");
+    if (!s.loading) loadMore();
+    return;
+  }
+  const a = s.ans[s.idx], answered = a != null;
+  const label = s.cfg.source === "review" ? "Mistake review" : s.cfg.source === "ai" ? "AI practice" : "Offline bank";
+  el.innerHTML = `<div class="row" style="margin-bottom:12px"><span class="tag p">${label}</span><span class="muted small">Q${s.idx + 1}${s.cfg.source === "review" ? " of " + s.qs.length : ""} \xB7 ${s.correct}/${s.done} correct</span><span class="spacer"></span><button class="btn sm" id="qRead">${icon("speaker")} Read</button><button class="btn sm" id="qEnd">End session</button></div>
+  <div class="card">${qBody(q, a, true)}
+    ${answered ? explainHTML(q) : ""}
+    <div id="qExtra">${q.te ? `<div class="explain">${md(q.te)}</div>` : ""}</div>
+    <div class="row end" style="margin-top:14px">${answered ? `<button class="btn sm" id="qTe">Explain in Telugu</button><button class="btn sm" id="qAsk">Ask mentor</button><button class="btn sm" id="qCard">+ Flashcard</button><button class="btn primary" id="qNext">Next \u2192</button>` : '<span class="muted small">Tap an option or say "option B"</span>'}</div>
+  </div>`;
+  el.querySelectorAll("[data-opt]").forEach((b) => b.onclick = () => answerPractice(+b.dataset.opt));
+  $("#qRead", el).onclick = () => speak(answered ? readText(q) + " " + q.explanation : readText(q));
+  $("#qEnd", el).onclick = () => {
+    s.ended = true;
+    rerender();
+  };
+  if (answered) {
+    $("#qNext", el).onclick = () => nextPractice();
+    $("#qAsk", el).onclick = () => askMentor(`Help me understand this NEET PG question.
+
+Q: ${q.stem}
+Options: ${q.options.map((o, i) => `${L[i]}) ${o}`).join("; ")}
+Correct: ${L[q.answer]}) ${q.options[q.answer]}
+I chose: ${L[a]}) ${q.options[a]}
+
+Explain the concept, give a mnemonic, and related high-yield facts.`);
+    $("#qCard", el).onclick = () => {
+      addCard({ front: q.stem, back: `${q.options[q.answer]}
+
+${q.pearl || ""}`, subject: q.subject });
+      toast("Added to flashcards", "ok");
+    };
+    $("#qTe", el).onclick = () => teluguExplain(q);
+  }
+}
+async function teluguExplain(q) {
+  const box = $("#qExtra");
+  if (!hasKey()) return toast("Add a Gemini API key in Settings for Telugu explanations.", "bad");
+  if (box) box.innerHTML = loader("\u0C24\u0C46\u0C32\u0C41\u0C17\u0C41\u0C32\u0C4B \u0C35\u0C3F\u0C35\u0C30\u0C3F\u0C38\u0C4D\u0C24\u0C41\u0C28\u0C4D\u0C28\u0C3E\u0C28\u0C41\u2026");
+  try {
+    q.te = await gemini({ prompt: `Explain this NEET PG MCQ in simple Telugu (Telugu script), keeping medical terms in English. Cover why the answer is correct, why others are wrong, and one memory tip. Max 150 words.
+
+Q: ${q.stem}
+Options: ${q.options.join(" | ")}
+Correct: ${q.options[q.answer]}
+Explanation: ${q.explanation}`, temperature: 0.5 });
+    rerender();
+    speak(q.te);
+  } catch (e) {
+    toast(e.message, "bad");
+    if (box) box.innerHTML = "";
+  }
+}
+function answerPractice(i, viaVoice = false) {
+  const s = Q.p, q = s?.qs[s.idx];
+  if (!q || s.ended || s.ans[s.idx] != null) return false;
+  s.ans[s.idx] = i;
+  const ok = i === q.answer;
+  s.done++;
+  if (ok) s.correct++;
+  recordAttempt(q, ok, s.cfg.source === "review" ? "review" : "practice");
+  rerender();
+  if (viaVoice || S.settings.handsFree) speak(ok ? `Correct! ${q.pearl || ""}` : `Incorrect. The answer is option ${L[q.answer]}, ${q.options[q.answer]}. ${q.pearl || ""}`);
+  if (s.cfg.source !== "review" && s.qs.length - s.idx <= 3) loadMore();
+  return true;
+}
+function nextPractice(viaVoice = false) {
+  const s = Q.p;
+  if (!s || s.ended) return false;
+  s.idx++;
+  rerender();
+  if (s.cfg.source !== "review" && s.qs.length - s.idx <= 3) loadMore();
+  const q = s.qs[s.idx];
+  if (q && (viaVoice || S.settings.handsFree)) speak(readText(q));
+  return true;
+}
+function drawPracticeSummary(el) {
+  const s = Q.p;
+  el.innerHTML = `<div class="card center">
+    <h2>Session complete</h2>
+    <p class="muted">${s.done} answered \xB7 ${s.correct} correct \xB7 ${pct(s.correct, s.done)}% accuracy</p>
+    <div class="row" style="justify-content:center;margin-top:12px"><button class="btn primary" id="sNew">New session</button><button class="btn" id="sRev" ${S.mistakes.length ? "" : "disabled"}>Review mistakes (${S.mistakes.length})</button><a class="btn" href="#/home">Dashboard</a></div>
+  </div>`;
+  $("#sNew", el).onclick = () => {
+    Q.p = null;
+    rerender();
+  };
+  $("#sRev", el).onclick = () => startPractice({ source: "review" });
+}
+function renderMock(el) {
+  root3 = el;
+  const m = Q.m;
+  if (!m) return drawMockSetup(el);
+  if (m.result) return drawMockResult(el);
+  drawMock(el);
+}
+function drawMockSetup(el) {
+  const opts = [25, 50, 100, 200];
+  el.innerHTML = `${hasKey() ? "" : noKeyNotice()}
+  <div class="card">
+    <div class="card-head"><h3>Grand test (NEET PG pattern)</h3><span class="tag">+4 correct \xB7 \u22121 wrong</span></div>
+    <p class="muted small">Questions are distributed across all 19 subjects by approximate NEET PG weightage and generated fresh by AI each time. Full length: 200 questions in 210 minutes.</p>
+    <div class="row" style="margin:12px 0">${opts.map((n) => `<label class="check"><input type="radio" name="mc" value="${n}" ${n === 50 ? "checked" : ""}/> ${n} Q \xB7 ${Math.round(n * 1.05)} min</label>`).join("")}</div>
+    <button class="btn primary" id="mStart">Start mock test</button>
+    ${hasKey() ? "" : `<p class="muted small">Without a key, the mock uses the ${BANK.length}-question offline bank.</p>`}
+  </div>
+  <div class="card"><h3>Previous mocks</h3>${S.mocks.length ? `<div class="table-wrap"><table><tr><th>Date</th><th>Score</th><th>Correct</th><th>Wrong</th><th>Accuracy</th></tr>${S.mocks.slice().reverse().map((r) => `<tr><td>${r.date}</td><td>${r.score}/${r.max}</td><td>${r.correct}</td><td>${r.wrong}</td><td>${pct(r.correct, r.attempted)}%</td></tr>`).join("")}</table></div>` : '<p class="empty">No mocks yet. Take your first one!</p>'}</div>`;
+  $("#mStart", el).onclick = () => startMock(+el.querySelector("input[name=mc]:checked").value);
+}
+function startMock(count = 50) {
+  const ai = hasKey();
+  if (!ai) count = Math.min(count, BANK.length);
+  const subjects = subjectMix(count);
+  const m = { subjects, qs: new Array(count).fill(null), idx: 0, ans: {}, marked: {}, start: null, dur: Math.round(count * 1.05) * 6e4, loaded: 0, result: null, confirm: false };
+  Q.m = m;
+  if (!ai) {
+    const qs = bankQuestions(count);
+    qs.forEach((q, i) => {
+      m.qs[i] = q;
+      m.subjects[i] = q.subject;
+    });
+    m.loaded = count;
+    m.start = Date.now();
+    startTimer();
+  } else generateMock(m);
+  if (currentRoute() === "mock") rerender();
+  else go("mock");
+}
+async function generateMock(m) {
+  for (let i = 0; i < m.qs.length; i += 10) {
+    if (Q.m !== m || m.result) return;
+    const subs = m.subjects.slice(i, i + 10);
+    let qs = [];
+    if (i) await new Promise((r) => setTimeout(r, 1500));
+    try {
+      qs = await generateQuestions({ subjects: subs });
+    } catch {
+      try {
+        qs = await generateQuestions({ subjects: subs });
+      } catch (e) {
+        toast(`${e.message} Filling with offline questions.`, "bad", 5e3);
+      }
+    }
+    if (Q.m !== m || m.result) return;
+    for (let j = 0; j < subs.length; j++) m.qs[i + j] = qs[j] || bankQuestions(1, subs[j])[0];
+    m.loaded = Math.min(m.qs.length, i + 10);
+    if (!m.start) {
+      m.start = Date.now();
+      startTimer();
+      rerender();
+    } else updatePalette();
+  }
+}
+function startTimer() {
+  clearInterval(timerId);
+  timerId = setInterval(() => {
+    const m = Q.m;
+    if (!m || m.result || !m.start) {
+      clearInterval(timerId);
+      return;
+    }
+    const left = m.dur - (Date.now() - m.start);
+    const t = document.getElementById("mTimer");
+    if (t) {
+      t.textContent = fmtClock(left);
+      t.classList.toggle("low", left < 5 * 6e4);
+    }
+    if (left <= 0) {
+      toast("Time up! Submitting your test.");
+      submitMock();
+    }
+  }, 1e3);
+}
+var fmtClock = (ms) => {
+  const s = Math.max(0, Math.floor(ms / 1e3));
+  return `${Math.floor(s / 3600)}:${String(Math.floor(s / 60) % 60).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+};
+function paletteHTML(m) {
+  return m.qs.map((q, i) => `<button data-go="${i}" class="${m.ans[i] != null ? "ans" : ""} ${m.marked[i] ? "mark" : ""} ${i === m.idx ? "cur" : ""}" ${q ? "" : "disabled"}>${i + 1}</button>`).join("");
+}
+function updatePalette() {
+  const p = document.getElementById("mPalette");
+  const m = Q.m;
+  if (!p || !m) return;
+  p.innerHTML = paletteHTML(m);
+  p.querySelectorAll("[data-go]").forEach((b) => b.onclick = () => {
+    m.idx = +b.dataset.go;
+    rerender();
+  });
+  const l = document.getElementById("mLoaded");
+  if (l) l.textContent = m.loaded < m.qs.length ? `Generating ${m.loaded}/${m.qs.length}\u2026` : "";
+}
+function drawMock(el) {
+  const m = Q.m;
+  if (!m.start) {
+    el.innerHTML = loader("Preparing your mock test \u2014 generating the first questions\u2026");
+    return;
+  }
+  const q = m.qs[m.idx];
+  const answered = Object.keys(m.ans).length;
+  el.innerHTML = `<div class="row" style="margin-bottom:12px"><span class="timer" id="mTimer">${fmtClock(m.dur - (Date.now() - m.start))}</span><span class="muted small">${answered}/${m.qs.length} answered</span><span class="muted small" id="mLoaded"></span><span class="spacer"></span><button class="btn sm ${m.confirm ? "primary" : ""}" id="mSubmit">${m.confirm ? "Confirm submit" : "Submit test"}</button></div>
+  <div class="grid" style="grid-template-columns:minmax(0,1fr)">
+    <div class="card">${q ? `<div class="muted small">Question ${m.idx + 1} of ${m.qs.length}</div>${qBody(q, m.ans[m.idx], false)}` : loader("Generating this question\u2026")}
+      <div class="row"><button class="btn sm" id="mPrev" ${m.idx ? "" : "disabled"}>\u2190 Prev</button><button class="btn sm" id="mMark">${m.marked[m.idx] ? "Unmark" : "Mark for review"}</button><button class="btn sm" id="mClear">Clear</button><span class="spacer"></span><button class="btn primary sm" id="mNext" ${m.idx < m.qs.length - 1 ? "" : "disabled"}>Save & next \u2192</button></div>
+    </div>
+    <div class="card"><div class="card-head"><h3>Question palette</h3><span class="muted small">Filled = answered \xB7 outlined = marked</span></div><div class="palette" id="mPalette"></div></div>
+  </div>`;
+  updatePalette();
+  el.querySelectorAll("[data-opt]").forEach((b) => b.onclick = () => answerMock(+b.dataset.opt));
+  $("#mPrev", el).onclick = () => {
+    m.idx--;
+    m.confirm = false;
+    rerender();
+  };
+  $("#mNext", el).onclick = () => nextMock();
+  $("#mMark", el).onclick = () => {
+    m.marked[m.idx] = !m.marked[m.idx];
+    rerender();
+  };
+  $("#mClear", el).onclick = () => {
+    delete m.ans[m.idx];
+    rerender();
+  };
+  $("#mSubmit", el).onclick = () => {
+    if (m.confirm) submitMock();
+    else {
+      m.confirm = true;
+      rerender();
+      setTimeout(() => {
+        if (Q.m === m && m.confirm && !m.result) {
+          m.confirm = false;
+          rerender();
+        }
+      }, 4e3);
+    }
+  };
+}
+function answerMock(i) {
+  const m = Q.m;
+  if (!m || m.result || !m.qs[m.idx]) return false;
+  m.ans[m.idx] = i;
+  rerender();
+  return true;
+}
+function nextMock() {
+  const m = Q.m;
+  if (!m || m.result || m.idx >= m.qs.length - 1) return false;
+  m.idx++;
+  m.confirm = false;
+  rerender();
+  return true;
+}
+function submitMock() {
+  const m = Q.m;
+  if (!m || m.result) return;
+  clearInterval(timerId);
+  const bySubject = {};
+  let correct = 0, wrong = 0;
+  m.qs.forEach((q, i) => {
+    var _a;
+    if (!q) return;
+    const b = bySubject[_a = q.subject] || (bySubject[_a] = { n: 0, c: 0, w: 0 });
+    b.n++;
+    const a = m.ans[i];
+    if (a == null) return;
+    const ok = a === q.answer;
+    if (ok) {
+      correct++;
+      b.c++;
+    } else {
+      wrong++;
+      b.w++;
+    }
+    recordAttempt(q, ok, "mock");
+  });
+  const total = m.qs.length;
+  m.result = { date: today(), total, attempted: correct + wrong, correct, wrong, score: correct * 4 - wrong, max: total * 4, bySubject, minutes: Math.round((Date.now() - m.start) / 6e4) };
+  S.mocks.push(m.result);
+  save();
+  rerender();
+}
+function drawMockResult(el) {
+  const m = Q.m, r = m.result;
+  el.innerHTML = `<div class="grid g4">
+    <div class="card stat"><div class="label">Score</div><div class="value">${r.score}</div><div class="sub">out of ${r.max}</div></div>
+    <div class="card stat"><div class="label">Correct</div><div class="value" style="color:var(--ok)">${r.correct}</div><div class="sub">${pct(r.correct, r.attempted)}% accuracy</div></div>
+    <div class="card stat"><div class="label">Wrong</div><div class="value" style="color:var(--bad)">${r.wrong}</div><div class="sub">\u2212${r.wrong} marks</div></div>
+    <div class="card stat"><div class="label">Unattempted</div><div class="value">${r.total - r.attempted}</div><div class="sub">${r.minutes} min used</div></div>
+  </div>
+  <div class="card section"><div class="card-head"><h3>Subject-wise</h3></div><div class="table-wrap"><table><tr><th>Subject</th><th>Qs</th><th>Correct</th><th>Wrong</th><th>Accuracy</th></tr>
+    ${Object.entries(r.bySubject).sort((a, b) => b[1].n - a[1].n).map(([id, v]) => `<tr><td>${esc(subjectName(id))}</td><td>${v.n}</td><td>${v.c}</td><td>${v.w}</td><td>${pct(v.c, v.c + v.w)}%</td></tr>`).join("")}</table></div></div>
+  <div class="card"><div class="card-head"><h3>AI performance analysis</h3><button class="btn sm" id="mAnalyse">${m.analysis ? "Regenerate" : "Analyse my mock"}</button></div><div id="mAn">${m.analysis ? md(m.analysis) : '<p class="muted small">Get a personalised breakdown of strengths, weak areas and a 3-day fix-it plan.</p>'}</div></div>
+  <div class="card"><h3>Review answers</h3>${m.qs.map((q, i) => q ? `<details style="margin:8px 0"><summary>${i + 1}. <span class="tag ${m.ans[i] == null ? "" : m.ans[i] === q.answer ? "ok" : "bad"}">${m.ans[i] == null ? "Skipped" : m.ans[i] === q.answer ? "Correct" : "Wrong"}</span> ${esc(q.stem.slice(0, 90))}\u2026</summary>${qBody(q, m.ans[i] ?? -1, true)}${explainHTML(q)}</details>` : "").join("")}</div>
+  <div class="row"><button class="btn primary" id="mNew">New mock</button><a class="btn" href="#/practice">Review mistakes</a></div>`;
+  $("#mNew", el).onclick = () => {
+    Q.m = null;
+    rerender();
+  };
+  $("#mAnalyse", el).onclick = async () => {
+    if (!hasKey()) return toast("Add a Gemini API key in Settings for AI analysis.", "bad");
+    $("#mAn", el).innerHTML = loader("Analysing\u2026");
+    try {
+      m.analysis = await gemini({
+        system: `You are an expert NEET PG coach. ${langInstruction()}`,
+        prompt: `Analyse this mock test result and give: 1) overall verdict with rank-band estimate caveat, 2) strongest and weakest subjects, 3) negative-marking strategy advice, 4) a concrete 3-day fix-it plan. Be concise with bullet points.
+
+Mock: ${JSON.stringify({ ...r, bySubject: Object.fromEntries(Object.entries(r.bySubject).map(([k, v]) => [subjectName(k), v])) })}
+
+Student profile:
+${(await Promise.resolve().then(() => (init_stats(), stats_exports))).summaryForAI()}`,
+        temperature: 0.6
+      });
+      rerender();
+    } catch (e) {
+      toast(e.message, "bad");
+      $("#mAn", el).innerHTML = "";
+    }
+  };
+}
+function quizVoice(cmd) {
+  const r = currentRoute();
+  if (r === "practice" && Q.p && !Q.p.ended) {
+    const q = Q.p.qs[Q.p.idx];
+    if (cmd.type === "option") return answerPractice(cmd.i, true);
+    if (cmd.type === "next") return nextPractice(true);
+    if (cmd.type === "read" && q) {
+      speak(readText(q));
+      return true;
+    }
+    if (cmd.type === "explain" && q) {
+      if (Q.p.ans[Q.p.idx] == null) {
+        speak("Answer first, then I will explain.");
+        return true;
+      }
+      if (S.settings.lang === "te") teluguExplain(q);
+      else speak(`The answer is ${q.options[q.answer]}. ${q.explanation}`);
+      return true;
+    }
+    if (cmd.type === "stop") {
+      Q.p.ended = true;
+      rerender();
+      return true;
+    }
+  }
+  if (r === "mock" && Q.m && !Q.m.result) {
+    const q = Q.m.qs[Q.m.idx];
+    if (cmd.type === "option") {
+      answerMock(cmd.i);
+      speak(`Marked option ${L[cmd.i]}`);
+      return true;
+    }
+    if (cmd.type === "next") return nextMock();
+    if (cmd.type === "prev" && Q.m.idx > 0) {
+      Q.m.idx--;
+      rerender();
+      return true;
+    }
+    if (cmd.type === "read" && q) {
+      speak(readText(q));
+      return true;
+    }
+    if (cmd.type === "submit") {
+      submitMock();
+      return true;
+    }
+  }
+  return false;
+}
+var quizActive = () => currentRoute() === "practice" && Q.p && !Q.p.ended && Q.p.qs[Q.p.idx] || currentRoute() === "mock" && Q.m && !Q.m.result && Q.m.qs[Q.m.idx];
+
+// js/daily.js
+init_store();
+init_stats();
+init_syllabus();
+var root4 = null;
+var busy2 = { plan: false, qotd: false, check: false };
+var L2 = "ABCD";
+function renderDaily(el) {
+  root4 = el;
+  const t = today(), plan = S.plans[t], j = S.journal.find((x) => x.date === t);
+  const hour = (/* @__PURE__ */ new Date()).getHours();
+  const done = plan ? plan.tasks.filter((x) => x.done).length : 0;
+  el.innerHTML = `${hasKey() ? "" : noKeyNotice()}
+  <div class="card hero">
+    <div class="card-head"><div><h2 style="margin:0">${hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening"}${S.settings.name ? ", Dr. " + esc(S.settings.name) : ""}</h2>
+    <div class="muted">${(/* @__PURE__ */ new Date()).toLocaleDateString(void 0, { weekday: "long", day: "numeric", month: "long" })}${daysLeft() !== null ? ` \xB7 ${daysLeft()} days to NEET PG` : ""}</div></div>
+    <div class="row"><button class="btn" id="dBrief">${plan ? "Hear briefing" : "Start my day"}</button></div></div>
+  </div>
+  <div class="grid g2 section">
+    <div class="card">
+      <div class="card-head"><h3>Today's plan</h3>${plan ? `<span class="tag p">${done}/${plan.tasks.length} done</span>` : ""}</div>
+      <div id="dPlan">${busy2.plan ? loader("Your AI coach is planning your day\u2026") : plan ? planHTML(plan) : `<p class="muted">Tap <b>Start my day</b> and your AI coach will build today's plan from your weak areas, backlog and exam countdown.</p>`}</div>
+      ${plan ? '<div class="row" style="margin-top:10px"><button class="btn sm" id="dRegen">Regenerate plan</button></div>' : ""}
+    </div>
+    <div class="card"><div class="card-head"><h3>Question of the day</h3></div><div id="dQotd">${qotdHTML()}</div></div>
+  </div>
+  <div class="card section">
+    <div class="card-head"><h3>Evening check-in</h3>${j ? '<span class="tag ok">Done today</span>' : ""}</div>
+    ${j ? `<p class="muted small">${j.hours}h studied \xB7 mood ${j.mood}/5</p><div class="explain">${md(j.feedback || "")}</div>` : `
+    <div class="grid g2">
+      <label class="field">Hours studied today<input id="jH" type="number" min="0" max="18" step="0.5" value="${(totals().todayMin / 60).toFixed(1)}" /></label>
+      <label class="field">Mood / energy<select id="jM"><option value="5">5 \u2014 great</option><option value="4" selected>4 \u2014 good</option><option value="3">3 \u2014 okay</option><option value="2">2 \u2014 low</option><option value="1">1 \u2014 exhausted</option></select></label>
+      <label class="field">What went well?<textarea id="jG" placeholder="Finished Pharma ANS, 80 MCQs"></textarea></label>
+      <label class="field">What was hard?<textarea id="jD" placeholder="Couldn't remember biostatistics formulas"></textarea></label>
+    </div>
+    <div class="row" style="margin-top:10px"><button class="btn primary" id="jSave">${busy2.check ? "Reviewing\u2026" : "Submit check-in"}</button></div>`}
+  </div>
+  <div class="card"><h3>Past 7 check-ins</h3>${S.journal.length ? `<div class="table-wrap"><table><tr><th>Date</th><th>Hours</th><th>Mood</th><th>Went well</th><th>Hard</th></tr>${S.journal.slice(-7).reverse().map((x) => `<tr><td>${x.date}</td><td>${x.hours}</td><td>${x.mood}/5</td><td>${esc(x.good || "-")}</td><td>${esc(x.hard || "-")}</td></tr>`).join("")}</table></div>` : '<p class="muted small">No check-ins yet.</p>'}</div>`;
+  $("#dBrief", el).onclick = () => plan ? speak(briefingText(plan)) : morningBriefing(true);
+  $("#dRegen", el)?.addEventListener("click", () => morningBriefing(false, true));
+  el.querySelectorAll("[data-task]").forEach((cb) => cb.onchange = () => {
+    plan.tasks[+cb.dataset.task].done = cb.checked;
+    if (cb.checked) markActive();
+    save();
+    renderDaily(el);
+  });
+  $("#jSave", el)?.addEventListener("click", () => eveningCheckin({ hours: +$("#jH", el).value || 0, mood: +$("#jM", el).value, good: $("#jG", el).value.trim(), hard: $("#jD", el).value.trim() }));
+  bindQotd(el);
+}
+var planHTML = (p) => `${p.greeting ? `<p>${esc(p.greeting)}</p>` : ""}<ul class="tasks">${p.tasks.map((t, i) => `<li class="${t.done ? "done" : ""}"><input type="checkbox" data-task="${i}" ${t.done ? "checked" : ""}/><span>${esc(t.text)} ${t.minutes ? `<span class="tag">${fmtMin(t.minutes)}</span>` : ""}</span></li>`).join("")}</ul>${p.tip ? `<p class="small" style="margin-top:10px"><b>Tip:</b> ${esc(p.tip)}</p>` : ""}${p.motivation ? `<p class="small muted"><i>${esc(p.motivation)}</i></p>` : ""}`;
+var briefingText = (p) => `${p.greeting || ""} Here is your plan for today. ${p.tasks.map((t, i) => `${i + 1}. ${t.text}`).join(". ")}. ${p.tip ? "Tip: " + p.tip : ""} ${p.motivation || ""}`;
+function fallbackPlan() {
+  const weak = weakAreas(3);
+  const hrs = S.settings.dailyHours || 8;
+  const subs = weak.length ? weak.map((w) => subjectName(w.s) + (w.t ? ` \u2013 ${w.t}` : "")) : subjectMix(3).map(subjectName);
+  return {
+    greeting: `Let's make today count${S.settings.name ? ", Dr. " + S.settings.name : ""}!`,
+    tasks: [
+      { text: `Revise ${subs[0]} (theory + notes)`, minutes: Math.round(hrs * 60 * 0.3) },
+      { text: `Practise 40 MCQs on ${subs[0]}`, minutes: 60 },
+      { text: `Revise ${subs[1] || subs[0]}`, minutes: Math.round(hrs * 60 * 0.2) },
+      { text: `Practise 30 MCQs on ${subs[2] || subs[0]}`, minutes: 45 },
+      { text: `Review saved mistakes (${S.mistakes.length}) and due flashcards`, minutes: 30 },
+      { text: "Evening check-in and plan tomorrow", minutes: 10 }
+    ],
+    tip: "Use active recall: close the book and write what you remember before checking.",
+    motivation: "Consistency beats intensity. One focused day at a time."
+  };
+}
+async function morningBriefing(voice = false, force = false) {
+  const t = today();
+  if (S.plans[t] && !force) {
+    if (voice) speak(briefingText(S.plans[t]));
+    if (currentRoute() !== "daily") go("daily");
+    return;
+  }
+  if (busy2.plan) return;
+  if (currentRoute() !== "daily") go("daily");
+  let plan;
+  if (!hasKey()) plan = fallbackPlan();
+  else {
+    busy2.plan = true;
+    if (root4) renderDaily(root4);
+    try {
+      const r = await gemini({
+        system: `You are a NEET PG daily study coach. ${langInstruction()} Return JSON only.`,
+        prompt: `Build today's study plan for this student. Use their weak areas, untouched subjects, mistakes backlog, days left to exam and target hours. Include: 1\u20132 revision blocks, MCQ practice targets (with numbers), a flashcard/mistake review block, short breaks, and one mock test if appropriate (e.g. weekly). Total time close to their target hours. Tasks must be concrete ("Revise Pathology \u2013 Neoplasia: hallmarks, tumour markers; then 40 MCQs").
+
+${summaryForAI()}
+
+JSON: {"greeting":"1 short line","tasks":[{"text":"","minutes":0,"subject":""}],"tip":"one study technique tip","motivation":"one short line"}`,
+        json: true,
+        temperature: 0.8
+      });
+      plan = { greeting: r.greeting || "", tasks: (r.tasks || []).map((x) => ({ text: x.text, minutes: +x.minutes || 0, subject: x.subject || "", done: false })), tip: r.tip || "", motivation: r.motivation || "" };
+      if (!plan.tasks.length) plan = fallbackPlan();
+    } catch (e) {
+      toast(e.message + " Showing a basic plan.", "bad");
+      plan = fallbackPlan();
+    } finally {
+      busy2.plan = false;
+    }
+  }
+  S.plans[t] = plan;
+  save();
+  if (root4 && currentRoute() === "daily") renderDaily(root4);
+  if (voice || S.settings.voiceReplies) speak(briefingText(plan));
+}
+function qotdHTML() {
+  const d = S.qotd[today()];
+  if (busy2.qotd) return loader("Picking a question\u2026");
+  if (!d) return `<p class="muted small">One fresh high-yield question every day.</p><button class="btn" id="qGet">Get today's question</button>`;
+  const q = d.q, a = d.a;
+  return `<div class="q-meta"><span class="tag p">${esc(subjectName(q.subject))}</span></div><div class="q-stem">${esc(q.stem)}</div>
+  <div class="opts">${q.options.map((o, i) => `<button class="opt ${a != null ? i === q.answer ? "right" : i === a ? "wrong" : "" : ""}" data-qo="${i}" ${a != null ? "disabled" : ""}><b>${L2[i]}</b><span>${esc(o)}</span></button>`).join("")}</div>
+  ${a != null ? `<div class="explain">${md(q.explanation)}${q.pearl ? `<div class="pearl">${esc(q.pearl)}</div>` : ""}</div>` : ""}`;
+}
+function bindQotd(el) {
+  $("#qGet", el)?.addEventListener("click", async () => {
+    busy2.qotd = true;
+    $("#dQotd", el).innerHTML = qotdHTML();
+    let q;
+    try {
+      q = hasKey() ? (await generateQuestions({ subjects: subjectMix(1), difficulty: "moderate", style: "clinical" }))[0] : bankQuestions(1)[0];
+    } catch (e) {
+      toast(e.message, "bad");
+      q = bankQuestions(1)[0];
+    }
+    busy2.qotd = false;
+    S.qotd = { [today()]: { q, a: null } };
+    save();
+    if (root4) renderDaily(root4);
+  });
+  el.querySelectorAll("[data-qo]").forEach((b) => b.onclick = () => {
+    const d = S.qotd[today()];
+    d.a = +b.dataset.qo;
+    recordAttempt(d.q, d.a === d.q.answer, "qotd");
+    save();
+    renderDaily(el);
+  });
+}
+async function eveningCheckin(entry) {
+  if (busy2.check) return;
+  const t = today();
+  const j = { date: t, ...entry, feedback: "" };
+  busy2.check = true;
+  if (root4) renderDaily(root4);
+  if (hasKey()) {
+    try {
+      const plan = S.plans[t];
+      j.feedback = await gemini({
+        system: `You are a caring but honest NEET PG coach doing an evening check-in. ${langInstruction()}`,
+        prompt: `Evening check-in. Hours: ${j.hours}. Mood: ${j.mood}/5. Went well: ${j.good || "-"}. Hard: ${j.hard || "-"}.
+Today's plan: ${plan ? plan.tasks.map((x) => `${x.done ? "[x]" : "[ ]"} ${x.text}`).join("; ") : "none"}
+
+${summaryForAI()}
+
+Reply in under 120 words: acknowledge effort, one specific fix for what was hard, and the top priority for tomorrow. If mood is low, include a brief wellbeing suggestion.`,
+        temperature: 0.7
+      });
+    } catch (e) {
+      toast(e.message, "bad");
+    }
+  }
+  if (!j.feedback) j.feedback = j.mood <= 2 ? "Well done for showing up on a tough day. Sleep 7\u20138 hours tonight, and start tomorrow with a light, easy win." : `Good work today \u2014 ${j.hours} hours logged. Tomorrow, start with your weakest area first while your mind is fresh.`;
+  busy2.check = false;
+  S.journal = S.journal.filter((x) => x.date !== t);
+  S.journal.push(j);
+  markActive();
+  save();
+  if (root4 && currentRoute() === "daily") renderDaily(root4);
+  if (S.settings.voiceReplies) speak(j.feedback);
+}
+function checkReminders() {
+  var _a;
+  if (!S.settings.reminders || !("Notification" in window) || Notification.permission !== "granted") return;
+  const now = /* @__PURE__ */ new Date(), t = today();
+  const hm = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+  const n = (_a = S.notified)[t] || (_a[t] = {});
+  const fire = (title, body, route2) => {
+    const show = () => new Notification(title, { body, icon: "icon-192.png", tag: route2 });
+    navigator.serviceWorker?.ready.then((reg) => reg.showNotification(title, { body, icon: "icon-192.png", tag: route2, data: { route: route2 } })).catch(show) ?? show();
+  };
+  if (!n.morning && hm >= S.settings.morningTime && !S.plans[t]) {
+    n.morning = 1;
+    fire("Good morning, Doctor!", "Your AI coach is ready with today's NEET PG plan.", "daily");
+    save();
+  }
+  if (!n.evening && hm >= S.settings.eveningTime && !S.journal.some((x) => x.date === t)) {
+    n.evening = 1;
+    fire("Evening check-in", "How did today go? Log your study and get tomorrow's priority.", "daily");
+    save();
+  }
+  for (const k of Object.keys(S.notified)) if (k < t) delete S.notified[k];
+}
+
+// js/plan.js
+init_store();
+init_syllabus();
+init_stats();
+init_store();
+var root5 = null;
+var busy3 = false;
+var P2 = { mode: "focus", focus: 25, brk: 5, endAt: 0, left: 25 * 60, running: false, timer: null };
+function renderPlan(el) {
+  root5 = el;
+  const ss = subjectStats();
+  const dl = daysLeft();
+  el.innerHTML = `${hasKey() ? "" : noKeyNotice()}
+  <div class="grid g2">
+    <div class="card center"><h3>Focus timer</h3>
+      <div class="row" style="justify-content:center"><span class="tag ${P2.mode === "focus" ? "p" : "ok"}">${P2.mode === "focus" ? "Focus" : "Break"}</span></div>
+      <div class="pomo" id="pomo">${clock()}</div>
+      <div class="row" style="justify-content:center">
+        <select id="pLen" style="width:auto">${[25, 45, 50, 90].map((m) => `<option value="${m}" ${m === P2.focus ? "selected" : ""}>${m} min focus</option>`).join("")}</select>
+        <button class="btn primary" id="pGo">${P2.running ? "Pause" : "Start"}</button><button class="btn" id="pReset">Reset</button>
+      </div>
+      <p class="muted small">Today: ${fmtMin(S.studyLog[today()] || 0)} focused. Completed focus blocks are added to your study log automatically.</p>
+    </div>
+    <div class="card"><h3>Exam countdown</h3>
+      ${dl !== null ? `<div class="stat"><div class="value">${dl} days</div><div class="sub">to NEET PG (${esc(S.settings.examDate)}) \xB7 ~${Math.round(dl * (S.settings.dailyHours || 8))} study hours available</div></div>` : '<p class="muted">Set your exam date in <a href="#/settings">Settings</a> to unlock the countdown and a date-aware plan.</p>'}
+      <div style="margin-top:10px"><h3>Last 14 days</h3>${heat()}</div>
+    </div>
+  </div>
+  <div class="card section"><div class="card-head"><h3>Master plan until the exam</h3><button class="btn sm primary" id="mpGo">${S.masterPlan ? "Regenerate" : "Generate with AI"}</button></div>
+    <div id="mpOut">${busy3 ? loader("Designing your roadmap\u2026") : S.masterPlan ? md(S.masterPlan.text) + `<p class="muted small">Generated ${esc(S.masterPlan.date)}</p>` : '<p class="muted small">Get a phase-wise roadmap (first reading, revisions, grand tests) based on your exam date, hours and weak areas.</p>'}</div></div>
+  <div class="card"><h3>Subject weightage vs your accuracy</h3><p class="muted small">Approximate questions per subject in the 200-question paper (varies each year).</p>
+    <div class="table-wrap"><table><tr><th>Subject</th><th>~Qs</th><th>Attempted</th><th>Accuracy</th><th style="width:30%"></th></tr>
+    ${SUBJECTS.map((s) => {
+    const v = ss[s.id], a = pct(v.c, v.n);
+    return `<tr><td>${esc(s.name)}</td><td>${s.w}</td><td>${v.n}</td><td>${v.n ? a + "%" : "-"}</td><td><div class="bar ${!v.n ? "" : a >= 70 ? "ok" : a >= 50 ? "warn" : "bad"}"><i style="width:${v.n ? a : 0}%"></i></div></td></tr>`;
+  }).join("")}
+    </table></div></div>`;
+  $("#pGo", el).onclick = () => P2.running ? pausePomo() : startPomo();
+  $("#pReset", el).onclick = () => resetPomo();
+  $("#pLen", el).onchange = (e) => {
+    P2.focus = +e.target.value;
+    resetPomo();
+  };
+  $("#mpGo", el).onclick = masterPlan;
+}
+function heat() {
+  const days = Array.from({ length: 14 }, (_, i) => {
+    const d = /* @__PURE__ */ new Date();
+    d.setDate(d.getDate() - 13 + i);
+    return [today(d), S.studyLog[today(d)] || 0];
+  });
+  const max = Math.max(60, ...days.map((d) => d[1]));
+  return `<div style="display:flex;gap:4px;align-items:flex-end;height:70px">${days.map(([d, m]) => `<div title="${d}: ${fmtMin(m)}" style="flex:1;background:var(--primary);opacity:${m ? 0.35 + 0.65 * (m / max) : 0.08};height:${Math.max(6, m / max * 70)}px;border-radius:4px"></div>`).join("")}</div>`;
+}
+async function masterPlan() {
+  if (!hasKey()) return toast("Add your Gemini API key in Settings.", "bad");
+  busy3 = true;
+  renderPlan(root5);
+  try {
+    const text = await gemini({
+      system: `You are an expert NEET PG strategist. ${langInstruction()}`,
+      prompt: `Create a phase-wise master plan from today until the exam for this student. Include: phases with date ranges, subject order (prioritise high-weightage and weak subjects, pair heavy with light), daily hour split (new reading / revision / MCQs), number of revisions, grand test schedule (weekly, then twice weekly in the last 6 weeks), and the final 15-day strategy. Use headings and bullets, be concrete and realistic.
+
+${summaryForAI()}`,
+      temperature: 0.6
+    });
+    S.masterPlan = { text, date: today() };
+    save();
+  } catch (e) {
+    toast(e.message, "bad");
+  }
+  busy3 = false;
+  if (root5) renderPlan(root5);
+}
+var clock = () => {
+  const s = Math.max(0, Math.round(P2.left));
+  return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+};
+function tick() {
+  P2.left = (P2.endAt - Date.now()) / 1e3;
+  const el = document.getElementById("pomo");
+  if (el) el.textContent = clock();
+  document.title = P2.running ? `${clock()} \xB7 ${P2.mode === "focus" ? "Focus" : "Break"} \u2014 NEET PG AI` : "NEET PG AI Agent";
+  if (P2.left <= 0) {
+    clearInterval(P2.timer);
+    P2.running = false;
+    if (P2.mode === "focus") {
+      addStudyMinutes(P2.focus);
+      P2.mode = "break";
+      P2.left = (P2.focus >= 50 ? 10 : P2.brk) * 60;
+      speak("Great focus session! Take a short break. Stretch and drink water.");
+      toast(`Focus block done \u2014 ${P2.focus} min logged`, "ok");
+    } else {
+      P2.mode = "focus";
+      P2.left = P2.focus * 60;
+      speak("Break over. Ready for the next focus session?");
+    }
+    if (root5?.isConnected) renderPlan(root5);
+  }
+}
+function startPomo() {
+  if (P2.running) return;
+  P2.endAt = Date.now() + P2.left * 1e3;
+  P2.running = true;
+  clearInterval(P2.timer);
+  P2.timer = setInterval(tick, 1e3);
+  if (root5?.isConnected) renderPlan(root5);
+}
+function pausePomo() {
+  if (!P2.running) return;
+  clearInterval(P2.timer);
+  P2.running = false;
+  P2.left = (P2.endAt - Date.now()) / 1e3;
+  document.title = "NEET PG AI Agent";
+  if (root5?.isConnected) renderPlan(root5);
+}
+function resetPomo() {
+  clearInterval(P2.timer);
+  P2.running = false;
+  P2.mode = "focus";
+  P2.left = P2.focus * 60;
+  document.title = "NEET PG AI Agent";
+  if (root5?.isConnected) renderPlan(root5);
+}
+
+// js/commands.js
+init_store();
+var OPT = {
+  a: 0,
+  ay: 0,
+  eh: 0,
+  "\u0C0F": 0,
+  "\u0C0E": 0,
+  one: 0,
+  "1": 0,
+  first: 0,
+  "\u0C12\u0C15\u0C1F\u0C3F": 0,
+  "\u0C12\u0C15\u0C1F\u0C4B": 0,
+  b: 1,
+  bee: 1,
+  bi: 1,
+  "\u0C2C\u0C40": 1,
+  "\u0C2C\u0C3F": 1,
+  two: 1,
+  "2": 1,
+  second: 1,
+  "\u0C30\u0C46\u0C02\u0C21\u0C41": 1,
+  "\u0C30\u0C46\u0C02\u0C21\u0C4B": 1,
+  c: 2,
+  see: 2,
+  sea: 2,
+  si: 2,
+  "\u0C38\u0C40": 2,
+  "\u0C38\u0C3F": 2,
+  three: 2,
+  "3": 2,
+  third: 2,
+  "\u0C2E\u0C42\u0C21\u0C41": 2,
+  "\u0C2E\u0C42\u0C21\u0C4B": 2,
+  d: 3,
+  dee: 3,
+  di: 3,
+  "\u0C21\u0C40": 3,
+  "\u0C21\u0C3F": 3,
+  four: 3,
+  "4": 3,
+  fourth: 3,
+  "\u0C28\u0C3E\u0C32\u0C41\u0C17\u0C41": 3,
+  "\u0C28\u0C3E\u0C32\u0C41\u0C17\u0C4B": 3
+};
+var PAGES = [
+  ["home", ["home", "dashboard", "\u0C39\u0C4B\u0C2E\u0C4D"]],
+  ["practice", ["practice", "\u0C2A\u0C4D\u0C30\u0C3E\u0C15\u0C4D\u0C1F\u0C40\u0C38\u0C4D"]],
+  ["mock", ["mock", "\u0C2E\u0C3E\u0C15\u0C4D"]],
+  ["mentor", ["mentor", "guru", "chat", "\u0C17\u0C41\u0C30\u0C41"]],
+  ["daily", ["daily", "today", "\u0C30\u0C4B\u0C1C\u0C41"]],
+  ["cards", ["flashcard", "flash card", "cards", "\u0C2B\u0C4D\u0C32\u0C3E\u0C37\u0C4D"]],
+  ["plan", ["planner", "plan", "timer", "\u0C2A\u0C4D\u0C32\u0C3E\u0C28\u0C4D"]],
+  ["settings", ["settings", "setting", "\u0C38\u0C46\u0C1F\u0C4D\u0C1F\u0C3F\u0C02\u0C17\u0C4D"]]
+];
+var say = (en, te) => speak(S.settings.lang === "te" && te ? te : en);
+function handleCommand(raw) {
+  const t = " " + raw.toLowerCase().replace(/[.,!?।"]/g, " ").replace(/\s+/g, " ").trim() + " ";
+  const has = (...w) => w.some((x) => t.includes(x));
+  const words = t.trim().split(" ");
+  const route2 = currentRoute();
+  if (quizActive()) {
+    const explicit = words.findIndex((w) => ["option", "answer", "\u0C06\u0C2A\u0C4D\u0C37\u0C28\u0C4D", "\u0C1C\u0C35\u0C3E\u0C2C\u0C41", "\u0C38\u0C2E\u0C3E\u0C27\u0C3E\u0C28\u0C02"].includes(w));
+    const cand = explicit >= 0 ? words[explicit + 1] : words.length <= 2 ? words[words.length - 1] : null;
+    if (cand && cand in OPT && (explicit >= 0 || words.length <= 2)) {
+      quizVoice({ type: "option", i: OPT[cand] });
+      return `Option ${"ABCD"[OPT[cand]]}`;
+    }
+  }
+  if (has("timer", "pomodoro", "\u0C1F\u0C48\u0C2E\u0C30\u0C4D", "focus session")) {
+    if (has("stop", "pause", "\u0C06\u0C2A\u0C41", "\u0C06\u0C2A\u0C02\u0C21\u0C3F")) {
+      pausePomo();
+      say("Timer paused.", "\u0C1F\u0C48\u0C2E\u0C30\u0C4D \u0C06\u0C2A\u0C3E\u0C28\u0C41.");
+      return "Timer paused";
+    }
+    go("plan");
+    setTimeout(startPomo, 100);
+    say("Focus timer started. All the best!", "\u0C1F\u0C48\u0C2E\u0C30\u0C4D \u0C2E\u0C4A\u0C26\u0C32\u0C48\u0C02\u0C26\u0C3F. All the best!");
+    return "Timer started";
+  }
+  if (/^ ?(stop|stop speaking|quiet|silence|ఆపు|ఆపండి|చాలు) ?$/.test(t)) {
+    stopSpeaking();
+    return "Stopped";
+  }
+  if (has("good morning", "briefing", "today's plan", "todays plan", "plan my day", "start my day", "\u0C36\u0C41\u0C2D\u0C4B\u0C26\u0C2F\u0C02", "\u0C17\u0C41\u0C21\u0C4D \u0C2E\u0C3E\u0C30\u0C4D\u0C28\u0C3F\u0C02\u0C17\u0C4D", "\u0C08 \u0C30\u0C4B\u0C1C\u0C41 \u0C2A\u0C4D\u0C32\u0C3E\u0C28\u0C4D", "\u0C08\u0C30\u0C4B\u0C1C\u0C41 \u0C2A\u0C4D\u0C32\u0C3E\u0C28\u0C4D")) {
+    morningBriefing(true);
+    return "Daily briefing";
+  }
+  if (has("good night", "check in", "check-in", "checkin", "evening report", "\u0C36\u0C41\u0C2D\u0C30\u0C3E\u0C24\u0C4D\u0C30\u0C3F", "\u0C17\u0C41\u0C21\u0C4D \u0C28\u0C48\u0C1F\u0C4D")) {
+    go("daily");
+    say("Let's do your evening check-in. Enter your hours and how the day went, then submit.", "Evening check-in \u0C1A\u0C47\u0C26\u0C4D\u0C26\u0C3E\u0C02. \u0C08 \u0C30\u0C4B\u0C1C\u0C41 \u0C0E\u0C28\u0C4D\u0C28\u0C3F \u0C17\u0C02\u0C1F\u0C32\u0C41 \u0C1A\u0C26\u0C3F\u0C35\u0C3E\u0C30\u0C4B, \u0C0E\u0C32\u0C3E \u0C1C\u0C30\u0C3F\u0C17\u0C3F\u0C02\u0C26\u0C4B \u0C28\u0C2E\u0C4B\u0C26\u0C41 \u0C1A\u0C47\u0C2F\u0C02\u0C21\u0C3F.");
+    setTimeout(() => document.getElementById("jH")?.scrollIntoView({ behavior: "smooth", block: "center" }), 200);
+    return "Evening check-in";
+  }
+  const startish = has("start", "begin", "take", "give me", "ask me", "let's", "\u0C2A\u0C4D\u0C30\u0C3E\u0C30\u0C02\u0C2D", "\u0C2E\u0C4A\u0C26\u0C32\u0C41", "\u0C07\u0C35\u0C4D\u0C35\u0C41", "\u0C05\u0C21\u0C41\u0C17\u0C41", "\u0C38\u0C4D\u0C1F\u0C3E\u0C30\u0C4D\u0C1F\u0C4D");
+  if (has("mock", "grand test", "\u0C2E\u0C3E\u0C15\u0C4D") && (startish || route2 !== "mock")) {
+    const n = (t.match(/\b(25|50|100|200)\b/) || [])[1];
+    startMock(n ? +n : 50);
+    return "Starting mock test";
+  }
+  if (has("mistake", "wrong questions", "\u0C24\u0C2A\u0C4D\u0C2A\u0C41")) {
+    startPractice({ source: "review" });
+    return "Reviewing mistakes";
+  }
+  if (has("quiz", "questions", "mcq", "\u0C15\u0C4D\u0C35\u0C3F\u0C1C\u0C4D", "\u0C2A\u0C4D\u0C30\u0C36\u0C4D\u0C28\u0C32\u0C41") || has("practice", "\u0C2A\u0C4D\u0C30\u0C3E\u0C15\u0C4D\u0C1F\u0C40\u0C38\u0C4D") && startish) {
+    const s = findSubject(t);
+    startPractice({ subject: s?.id || "", source: "ai", difficulty: has("hard", "difficult", "\u0C15\u0C37\u0C4D\u0C1F") ? "hard" : has("easy", "\u0C38\u0C41\u0C32\u0C2D") ? "easy" : "mixed", style: "mixed" });
+    say(`Starting ${s ? s.name : "mixed"} practice.`, `${s ? s.name : "Mixed"} practice \u0C2E\u0C4A\u0C26\u0C32\u0C41 \u0C2A\u0C46\u0C21\u0C41\u0C24\u0C41\u0C28\u0C4D\u0C28\u0C3E\u0C28\u0C41.`);
+    return `Practice: ${s ? s.name : "mixed"}`;
+  }
+  if (quizActive()) {
+    if (has(" next", "skip", "\u0C24\u0C30\u0C41\u0C35\u0C3E\u0C24", "\u0C24\u0C30\u0C4D\u0C35\u0C3E\u0C24", "\u0C28\u0C46\u0C15\u0C4D\u0C38\u0C4D\u0C1F\u0C4D")) {
+      quizVoice({ type: "next" });
+      return "Next";
+    }
+    if (has("previous", " back ", "\u0C35\u0C46\u0C28\u0C15\u0C4D\u0C15\u0C3F", "\u0C2E\u0C41\u0C02\u0C26\u0C41\u0C26\u0C3F")) {
+      quizVoice({ type: "prev" });
+      return "Previous";
+    }
+    if (has("explain", "why", "\u0C35\u0C3F\u0C35\u0C30\u0C3F\u0C02\u0C1A\u0C41", "\u0C0E\u0C02\u0C26\u0C41\u0C15\u0C41", "\u0C35\u0C3F\u0C35\u0C30\u0C23")) {
+      quizVoice({ type: "explain" });
+      return "Explaining";
+    }
+    if (has("read", "repeat", "\u0C1A\u0C26\u0C41\u0C35\u0C41", "\u0C2E\u0C33\u0C4D\u0C33\u0C40", "\u0C2E\u0C33\u0C4D\u0C32\u0C40")) {
+      quizVoice({ type: "read" });
+      return "Reading";
+    }
+    if (has("submit", "\u0C38\u0C2C\u0C4D\u0C2E\u0C3F\u0C1F\u0C4D")) {
+      quizVoice({ type: "submit" });
+      return "Submitted";
+    }
+    if (has("end session", "finish", "\u0C2E\u0C41\u0C17\u0C3F\u0C02\u0C1A\u0C41")) {
+      quizVoice({ type: "stop" });
+      return "Session ended";
+    }
+  }
+  if (route2 === "cards") {
+    if (has("show answer", "flip", "answer", "\u0C1C\u0C35\u0C3E\u0C2C\u0C41")) {
+      cardsVoice({ type: "flip" });
+      return "Answer";
+    }
+    const g = has("again", "\u0C2E\u0C33\u0C4D\u0C33\u0C40") ? 0 : has("hard", "\u0C15\u0C37\u0C4D\u0C1F\u0C02") ? 3 : has("easy", "\u0C38\u0C41\u0C32\u0C2D\u0C02") ? 5 : has("good", "\u0C2C\u0C3E\u0C17\u0C41\u0C02\u0C26\u0C3F") ? 4 : null;
+    if (g !== null && words.length <= 3) {
+      cardsVoice({ type: "grade", q: g });
+      return "Graded";
+    }
+    if (has("read", "\u0C1A\u0C26\u0C41\u0C35\u0C41")) {
+      cardsVoice({ type: "read" });
+      return "Reading";
+    }
+  }
+  if (has("open", "go to", "show", "\u0C24\u0C46\u0C30\u0C41\u0C35\u0C41", "\u0C1A\u0C42\u0C2A\u0C3F\u0C02\u0C1A\u0C41") || words.length <= 2) {
+    for (const [r, keys] of PAGES) if (keys.some((k) => t.includes(k))) {
+      go(r);
+      return `Opening ${r}`;
+    }
+  }
+  askMentor(raw.trim(), { voice: true });
+  return "Asking Guru\u2026";
+}
+
+// js/home.js
+init_store();
+init_stats();
+init_syllabus();
+function renderHome(el) {
+  const t = totals(), ss = subjectStats(), weak = weakAreas(5), plan = S.plans[today()];
+  const dl = daysLeft();
+  const cardsDue = S.cards.filter((c) => c.due <= Date.now()).length;
+  const practised = SUBJECTS.filter((s) => ss[s.id].n);
+  el.innerHTML = `${hasKey() ? "" : noKeyNotice()}
+  <div class="card hero">
+    <h2 style="margin-bottom:4px">${S.settings.name ? `Welcome back, Dr. ${esc(S.settings.name)}` : "Welcome, Doctor"}</h2>
+    <p class="muted">${dl !== null ? `<b>${dl} days</b> to NEET PG. ` : ""}${plan ? `Today's plan: ${plan.tasks.filter((x) => x.done).length}/${plan.tasks.length} tasks done.` : "Start your day to get an AI-built plan."}</p>
+    <div class="row" style="margin-top:12px">
+      <button class="btn" id="hDay">${plan ? "Open today's plan" : "Start my day"}</button>
+      <button class="btn" id="hPractice">Quick 10 MCQs</button>
+      <button class="btn" id="hMock">Mini mock (25)</button>
+      <a class="btn" href="#/mentor">Talk to Guru</a>
+    </div>
+  </div>
+  <div class="grid g4 section">
+    <div class="card stat"><div class="label">Streak</div><div class="value">${currentStreak()} ${currentStreak() === 1 ? "day" : "days"}</div><div class="sub">Keep it alive today</div></div>
+    <div class="card stat"><div class="label">Questions solved</div><div class="value">${t.n}</div><div class="sub">${t.todayN} today</div></div>
+    <div class="card stat"><div class="label">Accuracy</div><div class="value">${pct(t.c, t.n)}%</div><div class="sub">${t.todayN ? pct(t.todayC, t.todayN) + "% today" : "overall"}</div></div>
+    <div class="card stat"><div class="label">Focused today</div><div class="value">${fmtMin(t.todayMin)}</div><div class="sub">target ${S.settings.dailyHours}h</div></div>
+  </div>
+  <div class="grid g2 section">
+    <div class="card"><div class="card-head"><h3>Subject accuracy</h3><a class="small" href="#/plan">Details</a></div>
+      ${practised.length ? practised.sort((a, b) => ss[a.id].c / ss[a.id].n - ss[b.id].c / ss[b.id].n).map((s) => {
+    const v = ss[s.id], a = pct(v.c, v.n);
+    return `<div class="subj-row"><span>${esc(s.name.replace(/ \(.*\)/, ""))}</span><div class="bar ${a >= 70 ? "ok" : a >= 50 ? "warn" : "bad"}"><i style="width:${a}%"></i></div><span>${a}%</span></div>`;
+  }).join("") : '<p class="empty">Solve a few questions to see your subject-wise accuracy.</p>'}
+    </div>
+    <div>
+      <div class="card"><div class="card-head"><h3>Focus areas</h3></div>
+        ${weak.length ? weak.map((w, i) => `<div class="row" style="padding:5px 0"><span>${esc(subjectName(w.s))}${w.t ? ` \xB7 <span class="muted">${esc(w.t)}</span>` : ""}</span><span class="spacer"></span><span class="tag bad">${Math.round(w.acc * 100)}%</span><button class="btn sm" data-weak="${i}">Practise</button></div>`).join("") : '<p class="muted small">Your weakest topics will appear here after ~3 attempts per topic.</p>'}
+      </div>
+      <div class="card"><div class="card-head"><h3>Due for review</h3></div>
+        <div class="row"><a class="btn sm" href="#/practice">${S.mistakes.length} mistakes</a><a class="btn sm" href="#/cards">${cardsDue} flashcards</a></div>
+      </div>
+    </div>
+  </div>`;
+  $("#hDay", el).onclick = () => morningBriefing(false);
+  $("#hPractice", el).onclick = () => startPractice({ subject: "", source: "ai", difficulty: "mixed", style: "mixed" });
+  $("#hMock", el).onclick = () => startMock(25);
+  el.querySelectorAll("[data-weak]").forEach((b) => b.onclick = () => {
+    const w = weak[+b.dataset.weak];
+    startPractice({ subject: w.s, topic: w.t, source: "ai", difficulty: "mixed", style: "mixed" });
+  });
+}
+
+// js/settings.js
+init_store();
+function renderSettings(el) {
+  const s = S.settings;
+  el.innerHTML = `
+  <div class="card"><h3>Profile</h3><div class="grid g2">
+    <label class="field">Your name<input type="text" data-k="name" value="${esc(s.name)}" placeholder="e.g. Reddy" /></label>
+    <label class="field">NEET PG exam date<input type="date" data-k="examDate" value="${esc(s.examDate)}" /></label>
+    <label class="field">Target study hours / day<input type="number" min="1" max="16" data-k="dailyHours" value="${s.dailyHours}" /></label>
+    <label class="field">Language (voice + mentor)<select data-k="lang"><option value="en" ${s.lang === "en" ? "selected" : ""}>English</option><option value="te" ${s.lang === "te" ? "selected" : ""}>\u0C24\u0C46\u0C32\u0C41\u0C17\u0C41 + English (Telugu)</option></select></label>
+  </div></div>
+
+  <div class="card"><h3>AI engine \u2014 Google Gemini</h3>
+    <p class="muted small">Get a free API key at <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">aistudio.google.com/app/apikey</a>. The key is stored only in this browser and sent only to Google's Gemini API. Never commit it to GitHub.</p>
+    <div class="grid g2">
+      <label class="field">API key<input type="password" data-k="apiKey" value="${esc(s.apiKey)}" placeholder="AIza\u2026" autocomplete="off" /></label>
+      <label class="field">Model<input type="text" data-k="model" list="models" value="${esc(s.model)}" /><datalist id="models"><option value="gemini-2.5-flash"><option value="gemini-2.5-flash-lite"><option value="gemini-2.5-pro"></datalist></label>
+    </div>
+    <div class="row" style="margin-top:10px"><button class="btn" id="sTest">Test connection</button><span class="muted small" id="sTestOut"></span></div>
+  </div>
+
+  <div class="card"><h3>Voice</h3>
+    <p class="muted small">Voice input: ${canListen ? "supported" : "<b>not supported in this browser</b> \u2014 use Chrome/Edge on Android or desktop"}. Spoken replies: ${canSpeak ? "supported" : "not supported"}. For Telugu speech output, install a Telugu voice (Android: Google Speech Services \u2192 Telugu).</p>
+    <label class="check"><input type="checkbox" data-k="voiceReplies" ${s.voiceReplies ? "checked" : ""}/> Speak mentor and coach replies aloud</label>
+    <label class="check"><input type="checkbox" data-k="handsFree" ${s.handsFree ? "checked" : ""}/> Hands-free mode (keep listening; reads questions and results aloud)</label>
+    <label class="field" style="max-width:260px;margin-top:8px">Speech rate<input type="range" min="0.6" max="1.6" step="0.1" data-k="rate" value="${s.rate}" /></label>
+    <button class="btn sm" id="sVoice" style="margin-top:8px">Test voice</button>
+  </div>
+
+  <div class="card"><h3>Daily reminders</h3>
+    <p class="muted small">Notifications appear while the app (or installed app) is open in the background.</p>
+    <label class="check"><input type="checkbox" data-k="reminders" ${s.reminders ? "checked" : ""}/> Enable morning briefing and evening check-in reminders</label>
+    <div class="grid g2" style="margin-top:8px">
+      <label class="field">Morning briefing<input type="time" data-k="morningTime" value="${esc(s.morningTime)}" /></label>
+      <label class="field">Evening check-in<input type="time" data-k="eveningTime" value="${esc(s.eveningTime)}" /></label>
+    </div>
+  </div>
+
+  <div class="card"><h3>Appearance</h3>
+    <label class="field" style="max-width:260px">Theme<select data-k="theme"><option value="auto" ${s.theme === "auto" ? "selected" : ""}>Match system</option><option value="light" ${s.theme === "light" ? "selected" : ""}>Light</option><option value="dark" ${s.theme === "dark" ? "selected" : ""}>Dark</option></select></label>
+  </div>
+
+  <div class="card"><h3>Your data</h3>
+    <p class="muted small">All progress is saved in this browser. Export a backup to move to another device.</p>
+    <div class="row"><button class="btn" id="sExport">Export backup</button><label class="btn">Import backup<input type="file" id="sImport" accept=".json" hidden /></label><button class="btn danger" id="sReset">Reset progress</button></div>
+  </div>
+
+  <div class="card"><h3>Voice commands</h3>
+    <div class="table-wrap"><table>
+      <tr><th>Say (English)</th><th>Telugu</th><th>Does</th></tr>
+      <tr><td>good morning / daily briefing</td><td>\u0C36\u0C41\u0C2D\u0C4B\u0C26\u0C2F\u0C02 / \u0C08 \u0C30\u0C4B\u0C1C\u0C41 \u0C2A\u0C4D\u0C32\u0C3E\u0C28\u0C4D</td><td>AI builds and reads today's plan</td></tr>
+      <tr><td>start quiz on pathology</td><td>pathology \u0C15\u0C4D\u0C35\u0C3F\u0C1C\u0C4D \u0C2A\u0C4D\u0C30\u0C3E\u0C30\u0C02\u0C2D\u0C3F\u0C02\u0C1A\u0C41</td><td>Starts AI practice for a subject</td></tr>
+      <tr><td>start mock test</td><td>\u0C2E\u0C3E\u0C15\u0C4D \u0C1F\u0C46\u0C38\u0C4D\u0C1F\u0C4D \u0C2A\u0C4D\u0C30\u0C3E\u0C30\u0C02\u0C2D\u0C3F\u0C02\u0C1A\u0C41</td><td>Starts a 50-question mock</td></tr>
+      <tr><td>option A / B / C / D, answer C</td><td>\u0C0F / \u0C2C\u0C40 / \u0C38\u0C40 / \u0C21\u0C40, \u0C12\u0C15\u0C1F\u0C3F\u2026\u0C28\u0C3E\u0C32\u0C41\u0C17\u0C41</td><td>Answers the current question</td></tr>
+      <tr><td>next / previous</td><td>\u0C24\u0C30\u0C41\u0C35\u0C3E\u0C24 / \u0C35\u0C46\u0C28\u0C15\u0C4D\u0C15\u0C3F</td><td>Moves between questions</td></tr>
+      <tr><td>read question / repeat</td><td>\u0C1A\u0C26\u0C41\u0C35\u0C41 / \u0C2E\u0C33\u0C4D\u0C33\u0C40</td><td>Reads the question aloud</td></tr>
+      <tr><td>explain</td><td>\u0C35\u0C3F\u0C35\u0C30\u0C3F\u0C02\u0C1A\u0C41</td><td>Explains the answer</td></tr>
+      <tr><td>review flashcards, show answer, good / hard / again</td><td>\u0C2B\u0C4D\u0C32\u0C3E\u0C37\u0C4D \u0C15\u0C3E\u0C30\u0C4D\u0C21\u0C4D\u0C38\u0C4D</td><td>Hands-free flashcards</td></tr>
+      <tr><td>start timer / stop timer</td><td>\u0C1F\u0C48\u0C2E\u0C30\u0C4D \u0C2A\u0C4D\u0C30\u0C3E\u0C30\u0C02\u0C2D\u0C3F\u0C02\u0C1A\u0C41 / \u0C06\u0C2A\u0C41</td><td>Pomodoro focus timer</td></tr>
+      <tr><td>evening check-in / good night</td><td>\u0C36\u0C41\u0C2D\u0C30\u0C3E\u0C24\u0C4D\u0C30\u0C3F</td><td>Opens the check-in</td></tr>
+      <tr><td>open mentor / home / settings\u2026</td><td>\u0C39\u0C4B\u0C2E\u0C4D, \u0C38\u0C46\u0C1F\u0C4D\u0C1F\u0C3F\u0C02\u0C17\u0C4D\u0C38\u0C4D</td><td>Navigation</td></tr>
+      <tr><td>stop</td><td>\u0C06\u0C2A\u0C41</td><td>Stops speaking</td></tr>
+      <tr><td colspan="3">Anything else is sent to Guru, your AI mentor, as a question.</td></tr>
+    </table></div>
+    <p class="muted small">Keyboard: press <kbd>M</kbd> for the mic, <kbd>1</kbd>\u2013<kbd>4</kbd> to answer, <kbd>N</kbd> for next.</p>
+  </div>`;
+  el.querySelectorAll("[data-k]").forEach((inp) => {
+    const ev = inp.type === "text" || inp.type === "password" ? "input" : "change";
+    inp.addEventListener(ev, async () => {
+      const k = inp.dataset.k;
+      let v = inp.type === "checkbox" ? inp.checked : inp.value;
+      if (["dailyHours", "rate"].includes(k)) v = Number(v);
+      if (k === "apiKey" || k === "model") v = String(v).trim();
+      S.settings[k] = v;
+      save();
+      if (k === "theme") applyTheme();
+      if (k === "reminders" && v && "Notification" in window && Notification.permission !== "granted") {
+        const p = await Notification.requestPermission();
+        if (p !== "granted") {
+          toast("Notifications were blocked by the browser.", "bad");
+          S.settings.reminders = false;
+          inp.checked = false;
+          save();
+        }
+      }
+      if (ev === "change") toast("Saved");
+      window.dispatchEvent(new Event("settings-changed"));
+    });
+  });
+  $("#sTest", el).onclick = async () => {
+    const out = $("#sTestOut", el);
+    out.textContent = "Testing\u2026";
+    try {
+      const r = await gemini({ prompt: "Reply with exactly: Connected. Best wishes for NEET PG!", temperature: 0 });
+      out.textContent = "\u2713 " + r.slice(0, 80);
+    } catch (e) {
+      out.textContent = "\u2717 " + e.message;
+    }
+  };
+  $("#sVoice", el).onclick = () => speak(S.settings.lang === "te" ? "\u0C28\u0C2E\u0C38\u0C4D\u0C24\u0C47 \u0C21\u0C3E\u0C15\u0C4D\u0C1F\u0C30\u0C4D! \u0C2E\u0C40 NEET PG \u0C2A\u0C4D\u0C30\u0C2F\u0C3E\u0C23\u0C02\u0C32\u0C4B \u0C28\u0C47\u0C28\u0C41 \u0C24\u0C4B\u0C21\u0C41\u0C02\u0C1F\u0C3E\u0C28\u0C41." : "Hello Doctor! I am Guru, your NEET PG study companion.");
+  $("#sExport", el).onclick = () => download(`neetpg-backup-${today()}.json`, exportData());
+  $("#sImport", el).onchange = async (e) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    try {
+      importData(await f.text());
+      toast("Backup restored", "ok");
+      location.reload();
+    } catch {
+      toast("Invalid backup file", "bad");
+    }
+  };
+  let armed = false;
+  $("#sReset", el).onclick = (e) => {
+    if (!armed) {
+      armed = true;
+      e.target.textContent = "Tap again to confirm";
+      setTimeout(() => {
+        armed = false;
+        e.target.textContent = "Reset progress";
+      }, 4e3);
+      return;
+    }
+    resetAll(true);
+    toast("Progress reset");
+    location.reload();
+  };
+}
+
+// js/app.js
+var ROUTES = {
+  home: { title: "Home", icon: "home", render: renderHome },
+  daily: { title: "Daily Coach", icon: "daily", render: renderDaily },
+  practice: { title: "Practice", icon: "practice", render: renderPractice },
+  mock: { title: "Mock Test", icon: "mock", render: renderMock },
+  mentor: { title: "AI Mentor", icon: "mentor", render: renderMentor },
+  cards: { title: "Flashcards", icon: "cards", render: renderCards },
+  plan: { title: "Planner", icon: "plan", render: renderPlan },
+  settings: { title: "Settings", icon: "settings", render: renderSettings }
+};
+var view = document.getElementById("view");
+function renderNav(active2) {
+  const links = Object.entries(ROUTES).map(([k, r]) => `<a href="#/${k}" class="${k === active2 ? "active" : ""}">${icon(r.icon)}<span>${r.title}</span></a>`).join("");
+  document.getElementById("nav").innerHTML = links;
+  document.getElementById("bottomNav").innerHTML = links;
+  document.getElementById("sidebarFoot").innerHTML = S.settings.apiKey ? "AI: Gemini connected" : '<a href="#/settings">Add Gemini key</a> to enable AI';
+}
+function renderPills() {
+  const st = currentStreak(), dl = daysLeft();
+  document.getElementById("streakPill").textContent = st ? `${st}-day streak` : "";
+  document.getElementById("countdownPill").textContent = dl !== null ? `${dl} days to exam` : "";
+}
+function route() {
+  let r = currentRoute();
+  if (!ROUTES[r]) {
+    r = "home";
+    history.replaceState(null, "", "#/home");
+  }
+  renderNav(r);
+  renderPills();
+  document.getElementById("pageTitle").textContent = ROUTES[r].title;
+  try {
+    ROUTES[r].render(view);
+  } catch (e) {
+    console.error(e);
+    view.innerHTML = `<div class="card"><h3>Something went wrong</h3><p class="muted">${e.message}</p></div>`;
+  }
+  window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", route);
+window.addEventListener("settings-changed", () => {
+  renderNav(currentRoute());
+  renderPills();
+});
+var fab = document.getElementById("micFab");
+var bar = document.getElementById("voiceBar");
+var barText = document.getElementById("voiceText");
+var hideT;
+function showBar(text, keep2 = false) {
+  bar.hidden = false;
+  barText.textContent = text;
+  clearTimeout(hideT);
+  if (!keep2) hideT = setTimeout(() => {
+    if (!isListening()) bar.hidden = true;
+  }, 2500);
+}
+function onState2(s) {
+  if (s.error) {
+    toast(s.error, "bad");
+    fab.classList.remove("on");
+    bar.hidden = true;
+    return;
+  }
+  if (s.on === true) {
+    fab.classList.add("on");
+    showBar(S.settings.lang === "te" ? "\u0C35\u0C3F\u0C02\u0C1F\u0C41\u0C28\u0C4D\u0C28\u0C3E\u0C28\u0C41\u2026" : "Listening\u2026", true);
+  }
+  if (s.on === false) {
+    fab.classList.remove("on");
+    if (!barText.dataset.result) bar.hidden = true;
+  }
+  if (s.interim) showBar(s.interim, true);
+}
+function onText2(text) {
+  const res = handleCommand(text);
+  barText.dataset.result = "1";
+  showBar(`\u201C${text}\u201D \u2192 ${res}`);
+  setTimeout(() => {
+    delete barText.dataset.result;
+  }, 2600);
+}
+function toggleMic() {
+  if (!canListen) {
+    toast("Voice input needs Chrome or Edge (desktop or Android).", "bad");
+    return;
+  }
+  if (isListening()) stopListening();
+  else startListening({ continuous: !!S.settings.handsFree, onText: onText2, onState: onState2 });
+}
+fab.addEventListener("click", toggleMic);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    stopSpeaking();
+    if (isListening()) stopListening();
+    return;
+  }
+  if (e.target.closest("input, textarea, select") || e.metaKey || e.ctrlKey || e.altKey) return;
+  const k = e.key.toLowerCase();
+  if (k === "m") {
+    e.preventDefault();
+    toggleMic();
+    return;
+  }
+  if (!quizActive()) return;
+  if (["1", "2", "3", "4", "a", "b", "c", "d"].includes(k)) {
+    e.preventDefault();
+    quizVoice({ type: "option", i: "1234".includes(k) ? +k - 1 : "abcd".indexOf(k) });
+  } else if (k === "n" || k === "arrowright") {
+    e.preventDefault();
+    quizVoice({ type: "next" });
+  } else if (k === "p" || k === "arrowleft") {
+    e.preventDefault();
+    quizVoice({ type: "prev" });
+  }
+});
+setInterval(checkReminders, 3e4);
+setTimeout(checkReminders, 3e3);
+if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  navigator.serviceWorker.register("sw.js").catch((err) => console.warn("SW registration failed", err));
+  navigator.serviceWorker.addEventListener?.("message", (e) => {
+    if (e.data?.route) go(e.data.route);
+  });
+}
+var deferredInstall = null;
+var installBtn = document.getElementById("installBtn");
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredInstall = e;
+  installBtn.hidden = false;
+});
+installBtn.addEventListener("click", async () => {
+  if (!deferredInstall) return;
+  deferredInstall.prompt();
+  await deferredInstall.userChoice.catch(() => {
+  });
+  deferredInstall = null;
+  installBtn.hidden = true;
+});
+window.addEventListener("appinstalled", () => {
+  installBtn.hidden = true;
+  toast("Installed! Open NEET PG AI from your home screen.", "ok");
+});
+navigator.storage?.persist?.().catch(() => {
+});
+window.addEventListener("offline", () => toast("You are offline \u2014 AI features pause; the offline question bank still works.", "bad", 5e3));
+window.addEventListener("online", () => toast("Back online \u2014 AI features available again.", "ok"));
+applyTheme();
+if (!location.hash) history.replaceState(null, "", S.settings.apiKey ? "#/home" : "#/settings");
+route();
+if (!S.settings.apiKey) setTimeout(() => toast("Welcome! Add your free Gemini API key to unlock the AI agent.", "", 5e3), 400);
+
+</script>
+</body>
+</html>
